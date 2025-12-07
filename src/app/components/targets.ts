@@ -35,26 +35,6 @@ export const targets: Target[] = [
     ]
   },
   {
-    id: 'target-3',
-    blocks: [
-      '<div class="root">\n',
-      '  <div></div>\n',
-      '  <div></div>\n',
-      '</div>\n',
-      '<style>\n',
-      '  .root {\n',
-      '    display: flex;\ngap: 1rem;\n',
-      '  }\n',
-      '  div:nth-child(2) {\n',
-      '    background-color: #10b981;\nwidth: 4rem;\nheight: 4rem;\n',
-      '  }\n',
-      '  div:nth-child(3) {\n',
-      '    background-color: #f59e0b;\nwidth: 4rem;\nheight: 4rem;\n',
-      '  }\n',
-      '</style>',
-    ]
-  },
-  {
     id: 'target-4',
     blocks: [
       '<p>Center Me</p>\n',

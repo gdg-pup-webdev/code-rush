@@ -19,12 +19,16 @@ export function PreviewPane({ code, targetHtml }: PreviewPaneProps) {
       : `<html><body style="margin:0;padding:0;">${userCode}</body></html>`;
 
   return (
-    <div className="flex flex-col bg-gray-800/50 backdrop-blur rounded-xl p-6 border border-gray-700">
-      <h3 className="text-sm font-semibold text-gray-300 mb-3 uppercase tracking-wide">
+    <div className="flex flex-col bg-slate-900/40 backdrop-blur rounded-lg p-6 border border-slate-800">
+      <h3 className="text-sm font-semibold text-slate-300 mb-3 uppercase tracking-wide">
         {showTarget ? '🎯 Target Design' : '👁 Your Rendered Code'}
       </h3>
 
-      <div className="flex-1 relative rounded-lg overflow-hidden border-2 border-gray-700 bg-white">
+      <div
+        onMouseEnter={() => setShowTarget(true)}
+        onMouseLeave={() => setShowTarget(false)}
+        className="flex-1 relative rounded-lg overflow-hidden border border-slate-700 bg-white"
+      >
         <iframe
           key="user"
           title="User Output"
@@ -42,14 +46,6 @@ export function PreviewPane({ code, targetHtml }: PreviewPaneProps) {
             showTarget ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         />
-      </div>
-
-      <div
-        onMouseEnter={() => setShowTarget(true)}
-        onMouseLeave={() => setShowTarget(false)}
-        className="mt-4 p-3 bg-slate-700/30 border border-slate-600 rounded-lg text-center text-slate-300 text-sm cursor-pointer hover:bg-slate-700/50 transition-colors"
-      >
-        👆 Hover here to see the target design
       </div>
     </div>
   );
