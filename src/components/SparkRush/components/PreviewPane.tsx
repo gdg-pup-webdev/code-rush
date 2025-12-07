@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { CodeBlock } from "../types";
 import { generateHtml } from "../challenge";
 
+import { useSparkRush } from "../SparkRushContext";
+
 interface PreviewPaneProps {
-  codeBlocks: CodeBlock[];
-  targetHtml: string;
   showTargetFlash?: boolean;
 }
 
@@ -12,38 +12,39 @@ interface PreviewPaneProps {
  * Preview pane showing user code and target design
  */
 export function PreviewPane({
-  codeBlocks,
-  targetHtml,
   showTargetFlash,
 }: PreviewPaneProps) {
+  const { codeBlocks, challenge } = useSparkRush();
   const [showTarget, setShowTarget] = useState(false);
   const displayTarget = showTarget || showTargetFlash;
 
   const userCode = generateHtml(codeBlocks);
   const userHtml = `${userCode}`;
 
+  const targetHtml = generateHtml(challenge.codeBlocks);
+
   return (
     <div
-      className={`flex flex-col backdrop-blur rounded-lg p-6 border h-full transition-colors ${
+      className={`flex flex-col rounded-xl border-2 h-full transition-colors duration-300 ease-in-out font-sans ${
         displayTarget
-          ? "bg-yellow-400/20 border-yellow-400/30"
-          : "bg-slate-900/40 border-slate-800"
+          ? "bg-yellow-100 border-yellow-400"
+          : "bg-white border-gray-200"
       }`}
     >
-      <h3 className="text-sm font-semibold text-slate-300 mb-4 uppercase tracking-wide">
+      <h3 className="text-2xl font-extrabold text-gray-800 capitalize tracking-wide p-6 pb-4 border-b border-gray-200">
         {displayTarget ? "Target Design" : "Your Output"}
       </h3>
 
       <div
         onMouseEnter={() => setShowTarget(true)}
         onMouseLeave={() => setShowTarget(false)}
-        className="flex-1 relative rounded-lg overflow-hidden border border-slate-700 bg-white p-4"
+        className="flex-1 relative rounded-b-xl overflow-hidden bg-white"
       >
         <iframe
           key="user"
           title="User Output"
           srcDoc={userHtml}
-          className={`absolute inset-0 w-full h-full transition-opacity ${
+          className={`absolute inset-0 w-full h-full transition-opacity border-none ${
             displayTarget ? "opacity-0 pointer-events-none" : "opacity-100"
           }`}
         />
@@ -52,7 +53,7 @@ export function PreviewPane({
           key="target"
           title="Target Output"
           srcDoc={targetHtml}
-          className={`absolute inset-0 w-full h-full transition-opacity ${
+          className={`absolute inset-0 w-full h-full transition-opacity border-none ${
             displayTarget ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         />

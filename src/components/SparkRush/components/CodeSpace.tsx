@@ -25,7 +25,10 @@ type Props = {
   setCodeBlocks: React.Dispatch<React.SetStateAction<CodeBlock[]>>;
 };
 
-export const CodeSpace = ({ codeBlocks, setCodeBlocks }: Props) => {
+import { useSparkRush } from "../SparkRushContext";
+
+export const CodeSpace = () => {
+  const { codeBlocks, setCodeBlocks } = useSparkRush();
   // 🔥 Local state for sorting
   const [localBlocks, setLocalBlocks] = useState<CodeBlock[]>([]);
 
@@ -51,7 +54,7 @@ export const CodeSpace = ({ codeBlocks, setCodeBlocks }: Props) => {
     >
       <SortableContext items={localBlocks.map((i) => i.id)}>
         <div
-          className={`flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 bg-slate-900/30 border-slate-700 hover:border-slate-600`}
+          className={`flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 bg-slate-900  border-slate-700 hover:border-slate-600`}
         >
           {localBlocks.map((b) => (
             <SortableCodeBlockComponent key={b.id} codeBlock={b} />
