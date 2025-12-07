@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { CodeBlock } from "../types";
+import { generateHtml } from "../challenge";
 
 interface PreviewPaneProps {
   codeBlocks: CodeBlock[];
@@ -18,11 +19,8 @@ export function PreviewPane({
   const [showTarget, setShowTarget] = useState(false);
   const displayTarget = showTarget || showTargetFlash;
 
-  const userCode = codeBlocks.map((c) => c.content).join("");
-  const userHtml =
-    codeBlocks.length === 0
-      ? '<html><body style="margin:0;padding:1rem;"></body></html>'
-      : `<html><body style="margin:0;padding:1rem;">${userCode}</body></html>`;
+  const userCode = generateHtml(codeBlocks);
+  const userHtml = `${userCode}`;
 
   return (
     <div

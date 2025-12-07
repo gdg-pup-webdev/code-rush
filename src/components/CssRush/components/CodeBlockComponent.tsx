@@ -18,20 +18,15 @@ export const CodeBlockComponent = ({
   ...rest
 }: Props) => {
   return (
-
     // when when being dragged
     <div
       ref={ref}
       style={{
         ...style,
       }}
-      className={
-        `flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto   ${
-          isDragging ? " opacity-0 " : ""
-
-        } ${
-          isOverlay ? "bg-gray-600" : " "} `
-      }
+      className={`flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto    ${
+        isDragging ? " opacity-0 " : ""
+      } ${isOverlay ? "bg-gray-600" : " hover:bg-gray-800"} `}
       {...rest}
     >
       <div className="flex-1 px-3 py-1 rounded transition-colors text-xs select-none pointer-events-none">
@@ -59,7 +54,7 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
 
   // Tokenize and highlight the content
   const parts = trimmedContent.split(
-    /(<[^>]+>|:[^;}\n]+|"[^"]*"|'[^']*'|[#][0-9a-f]{3,6}|[{}:;])/
+    /(<[^>]+>|"[^"]*"|'[^']*'|[#][0-9a-f]{3,6}|[{}:;])/
   );
 
   // Calculate padding (2px per space = 0.125rem)
@@ -67,7 +62,7 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
 
   return (
     <pre
-      className="font-mono whitespace-pre-wrap leading-relaxed text-slate-100"
+      className="font-mono whitespace-pre-wrap leading-relaxed text-slate-100 text-xl"
       style={{ paddingLeft: `${paddingRem}rem` }}
     >
       {parts.map((part, idx) => {
@@ -77,15 +72,6 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
         if (part.match(/^<[^>]+>$/)) {
           return (
             <span key={idx} className="text-blue-300">
-              {part}
-            </span>
-          );
-        }
-
-        // CSS property names (ends with :)
-        if (part.match(/^[a-z-]+:$/)) {
-          return (
-            <span key={idx} className="text-green-300">
               {part}
             </span>
           );
@@ -113,6 +99,38 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
         if (part.match(/^[{}:;]$/)) {
           return (
             <span key={idx} className="text-purple-300">
+              {part}
+            </span>
+          );
+        }
+
+        // CSS property names and values
+        if (
+          parts[idx - 1] === "{" ||
+          parts[idx + 1] === ":" ||
+          parts[idx - 1] === ";" ||
+          (idx > 0 && parts[idx - 1]?.includes("\n"))
+        ) {
+          const colonIndex = parts.indexOf(":", idx);
+          const semiOrBraceIndex = Math.min(
+            parts.indexOf(";", idx) !== -1 ? parts.indexOf(";", idx) : Infinity,
+            parts.indexOf("}", idx) !== -1 ? parts.indexOf("}", idx) : Infinity
+          );
+
+          if (colonIndex !== -1 && colonIndex < semiOrBraceIndex) {
+            // This is a property name
+            return (
+              <span key={idx} className="text-green-300">
+                {part}
+              </span>
+            );
+          }
+        }
+
+        // CSS values (after colon, before semicolon/brace)
+        if (parts[idx - 1] === ":") {
+          return (
+            <span key={idx} className="text-pink-300">
               {part}
             </span>
           );

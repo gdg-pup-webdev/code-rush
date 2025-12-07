@@ -32,12 +32,12 @@ export function shuffleArray<T>(array: T[]): T[] {
 }
 
 export function generateHtml(blocks: CodeBlock[]): string {
-  const code = blocks.map((block) => block.content).join("");
-
-  return code
+  const code = blocks.map((block) => block.content).join("")
     .replace(/\n/g, "")       // remove newlines
     .replace(/\t/g, "")       // remove tabs
-    .replace(/ +/g, "");      // remove multiple spaces
+    .replace(/ +/g, "");
+
+  return code;      // remove multiple spaces
 }
 
 

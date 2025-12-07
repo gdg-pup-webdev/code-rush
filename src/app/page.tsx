@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { CssRush } from "./components/CssRush";
+import { CssRush } from "@/components/CssRush";
+import { useEffect, useState } from "react"; 
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
