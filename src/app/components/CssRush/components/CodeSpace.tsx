@@ -6,21 +6,19 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import { CodeBlock } from "../types";
-import { CodeItem } from "./CodeItem";
-import {
-  closestCenter,
-  closestCorners,
+import { CodeBlock } from "../types"; 
+import { 
   DndContext,
   DragOverlay,
   KeyboardSensor,
+  MouseSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
-} from "@dnd-kit/core";
-import { Target } from "../targets";
-import { createCodeBlocks, shuffleArray } from "../utils";
+} from "@dnd-kit/core"; 
 import { SortableCodeItem } from "./SortableCodeItem";
+import { CodeItem } from "./CodeItem";
 
 interface CodeSpaceProps {
   codeBlocks: CodeBlock[];
@@ -31,38 +29,38 @@ interface CodeSpaceProps {
  * Code space where blocks are dropped and arranged
  */
 export function CodeSpace({ codeBlocks, setCodeBlocks }: CodeSpaceProps) {
+  
   const [activeId, setActiveId] = useState<string | null>(null);
+ 
+  const sensors =useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
-  const handleDragStart = (event: any) => {
-    setActiveId(event.active.id);
-  };
+ function handleDragStart(event: any) {
+  setActiveId(event.active.id);
+}
 
-  function handleDragOver(event: any) {
-    const { active, over } = event;
+function handleDragEnd(event: any) {
+  const { active, over } = event;
 
-    if (active.id !== over.id) {
-      const oldIndex = codeBlocks.findIndex((i) => i.id === active.id);
-      const newIndex = codeBlocks.findIndex((i) => i.id === over.id);
-
-      setCodeBlocks(arrayMove(codeBlocks, oldIndex, newIndex));
-    }
+  if (!over) {
+    setActiveId(null);
+    return;
   }
 
-  // Handlers
-  const handleDragEnd = (event: any) => {
-    setActiveId(null);
-     
-  };
+  if (active.id !== over.id) {
+    const oldIndex = codeBlocks.findIndex((i) => i.id === active.id);
+    const newIndex = codeBlocks.findIndex((i) => i.id === over.id);
 
-  // Drag and drop setup
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  );
+    setCodeBlocks(arrayMove(codeBlocks, oldIndex, newIndex));
+  }
+
+  setActiveId(null);
+}
+
+function handleDragOver() {
+  // NO REORDERING HERE
+}
+
+ 
 
   return (
     <DndContext
@@ -88,10 +86,14 @@ export function CodeSpace({ codeBlocks, setCodeBlocks }: CodeSpaceProps) {
       </SortableContext>
 
       <DragOverlay>
-        {/* {activeId && (
-          <GhostCodeItem content={codeBlocks.find((c) => c.id === activeId)!.content} />
-        )} */}
-      </DragOverlay>
+  {activeId && (
+    <CodeItem
+      id={activeId}
+      content={codeBlocks.find((c) => c.id === activeId)!.content}
+      className="text-white w-full border border-white px-3 py-2 rounded-md bg-slate-900/40 opacity-80"
+    />
+  )}
+</DragOverlay>
     </DndContext>
   );
 }

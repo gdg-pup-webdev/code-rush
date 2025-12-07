@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react"; 
+import React, { forwardRef } from "react";
 
 /**
  * Syntax highlighting for code content
@@ -97,16 +97,24 @@ export const CodeItem = forwardRef<HTMLDivElement, CodeItemProps>(
   ({ id, content, ...rest }, ref) => {
     return (
       <div
-        ref={ref}
-        className="flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto border-1 border-white"
-        {...rest}
-      >
-        <div className="flex-1 px-3 py-1 rounded transition-colors text-xs select-none pointer-events-none">
-          <div className="text-white">
-            <SyntaxHighlightedContent content={content} />
-          </div>
-        </div>
-      </div>
+  ref={ref}
+  className="text-white w-full border border-white px-3 py-2 rounded-md bg-slate-900/40"
+  {...rest}
+>
+  {content}
+</div>
+      // <div
+      //   ref={ref}
+      //   className="flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto border-1 border-white"
+      //   {...rest}
+      // >
+      //   <div className="flex-1 px-3 py-1 rounded transition-colors text-xs select-none pointer-events-none">
+      //     <div className="text-white">
+      //       {content}
+      //       {/* <SyntaxHighlightedContent content={content} /> */}
+      //     </div>
+      //   </div>
+      // </div>
     );
   }
 );
