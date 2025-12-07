@@ -41,6 +41,7 @@ export function CssRush({ gameDurationSeconds = 180 }: GameConfigProps) {
   });
   const [isClient, setIsClient] = useState(false);
   const [showSuccessFlash, setShowSuccessFlash] = useState(false);
+  const [showTargetFlash, setShowTargetFlash] = useState(true);
 
   // Hooks
   const [holdingBlockId, setHoldingBlockId] = useState<string | null>(null);
@@ -112,9 +113,20 @@ export function CssRush({ gameDurationSeconds = 180 }: GameConfigProps) {
         const shuffled = shuffleArray(newTarget.blocks);
         setCode(createCodeBlocks(shuffled));
         setShowSuccessFlash(false);
+        setShowTargetFlash(true);
       }, 500);
     }
   }, [code, currentTarget]);
+
+  // Flash target at start of each round
+  useEffect(() => {
+    if (showTargetFlash) {
+      const timer = setTimeout(() => {
+        setShowTargetFlash(false);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [showTargetFlash]);
 
   // Handlers
   const handleDragEnd = (event: any) => {
@@ -190,7 +202,7 @@ export function CssRush({ gameDurationSeconds = 180 }: GameConfigProps) {
           </div>
 
           {/* Right Column */}
-          <PreviewPane code={code} targetHtml={generateTargetHtml(currentTarget.blocks)} />
+          <PreviewPane code={code} targetHtml={generateTargetHtml(currentTarget.blocks)} showTargetFlash={showTargetFlash} />
         </div>
       </div>
 

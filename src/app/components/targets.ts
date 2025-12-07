@@ -8,7 +8,7 @@ export interface Target {
  */
 export function generateTargetHtml(blocks: string[]): string {
   const code = blocks.join('');
-  return `<html><body style="margin:0;padding:0;">${code}</body></html>`;
+  return `<html><body style="margin:0;padding:1rem;">${code}</body></html>`;
 }
 
 export const targets: Target[] = [
