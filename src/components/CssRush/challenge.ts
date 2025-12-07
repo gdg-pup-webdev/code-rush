@@ -6,7 +6,7 @@ export const loadRandomChallenge = (): Challenge => {
   const rawChallenge = challenges[Math.floor(Math.random() * challenges.length)];
   const challenge: Challenge = {
     ...rawChallenge,
-    id: randomUUID(),
+    id: crypto.randomUUID(),
     codeBlocks: rawChallenge.codeblocks.map((block) =>
       loadCodeBlock(block)
     ),
@@ -16,7 +16,17 @@ export const loadRandomChallenge = (): Challenge => {
 
 export const loadCodeBlock = (content: string): CodeBlock => {
   return {
-    id: randomUUID(),
+    id: crypto.randomUUID(),
     content,
   };
 };
+
+
+export function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}

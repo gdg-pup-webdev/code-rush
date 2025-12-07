@@ -9,10 +9,11 @@ import {
   useSensors,
   DragOverlay,
   closestCorners,
+  DragStartEvent,
+  DragOverEvent,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
-
-import people from "../people.json";
+ 
 import { SortableCodeBlockComponent } from "./SortableCodeBlockComponent";
 import { CodeBlockComponent } from "./CodeBlockComponent";
 import { CodeBlock } from "../types";
@@ -25,7 +26,7 @@ type Props = {
 
 
 export const CodeSpace = ({codeBlocks, setCodeBlocks}: Props) => { 
-  const [activeId, setActiveId] = useState(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
   return (
@@ -39,7 +40,7 @@ export const CodeSpace = ({codeBlocks, setCodeBlocks}: Props) => {
       onDragCancel={handleDragEnd}
     >
       <SortableContext items={codeBlocks.map((i) => i.id)}  >
-        <div className="flex flex-col gap-1 w-full border-3 border-black">
+        <div className="bg-gray-900 flex flex-col gap-1 w-50 border-3 border-black">
           {codeBlocks.map((b) => (
             <SortableCodeBlockComponent
               key={b.id}
@@ -58,12 +59,14 @@ export const CodeSpace = ({codeBlocks, setCodeBlocks}: Props) => {
     </DndContext>
   );
 
-  function handleDragStart(event) {
-    setActiveId(event.active.id);
+  function handleDragStart(event : DragStartEvent) {
+    setActiveId(event.active.id as string);
   }
 
-  function handleDragOver(event) {
+  function handleDragOver(event : DragOverEvent) {
     const { active, over } = event;
+
+    if (!over) return;
 
     if (active.id !== over.id) {
       setCodeBlocks((items) => {
