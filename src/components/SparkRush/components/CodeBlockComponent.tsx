@@ -24,13 +24,14 @@ export const CodeBlockComponent = ({
       style={{
         ...style,
       }}
-      className={`flex items-start gap-2 mb-1 group cursor-grab active:cursor-grabbing select-none pointer-events-auto rounded-md  ${
+      className={`flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto    ${
         isDragging ? " opacity-0 " : ""
-      } ${isOverlay ? "bg-gray-200" : " hover:bg-gray-200"} `}
+      } ${isOverlay ? "bg-gray-600" : " hover:bg-gray-800"} `}
       {...rest}
     >
-      <div className="flex-1 px-3 py-2 rounded-md transition-colors text-xs select-none pointer-events-none">
-        <div className="text-gray-800">
+      <div className="flex-1 px-3 py-1 rounded transition-colors text-xs select-none pointer-events-none">
+        <div className="text-white">
+          {/* {codeBlock.content} */}
           <SyntaxHighlightedContent content={codeBlock.content} />
         </div>
       </div>
@@ -39,91 +40,127 @@ export const CodeBlockComponent = ({
 };
 
 function SyntaxHighlightedContent({ content }: { content: string }) {
-  // ... (rest of the function is the same)
+  // Split into lines first (before trimming)
+  const lines = content.split("\n");
+
+  // Find the first non-empty line to get base indentation
+  const firstNonEmptyLine = lines.find((l) => l.trim());
+  let baseIndent = firstNonEmptyLine
+    ? (firstNonEmptyLine.match(/^(\s*)/) || [])[1]?.length || 0
+    : 0;
+
+  // Now trim start and end whitespace from the entire content
+  const trimmedContent = content.trim();
 
   // Tokenize and highlight the content
-  const parts = content.split(
+  const parts = trimmedContent.split(
     /(<[^>]+>|"[^"]*"|'[^']*'|[#][0-9a-f]{3,6}|[{}:;])/
   );
 
+  // Calculate padding (2px per space = 0.125rem)
+  const paddingRem = baseIndent * 1;
+
+  baseIndent = Math.floor(baseIndent / 2);
+
   return (
-    <pre
-      className="font-mono whitespace-pre-wrap leading-relaxed text-gray-800 text-base"
-    >
-      {parts.map((part, idx) => {
-        if (!part) return null;
+    <div className="relative w-full flex flex-row items-stretch">
+      {/* {Array.from({ length: baseIndent }).map((_, idx) => {
+        return (
+          <>
+            <div
+              key={idx}
+              className="absolute top-0 bottom-0 w-[1px] bg-gray-600"
+              style={{ left: `${idx * 36 }px`, }} // or rem
+            ></div>
+          </>
+        );
+      })} */}
 
-        // HTML tags
-        if (part.match(/^<[^>]+>$/)) {
-          return (
-            <span key={idx} style={{ color: 'var(--google-red)' }}>
-              {part}
-            </span>
-          );
-        }
+      <div style={{ width: `${baseIndent * 36 }px` }}></div>
 
-        // Quoted strings
-        if (part.match(/^["'][^"']*["']$/)) {
-          return (
-            <span key={idx} style={{ color: 'var(--google-green)' }}>
-              {part}
-            </span>
-          );
-        }
+      <pre
+        className="font-mono whitespace-pre-wrap leading-relaxed text-slate-100 text-xl"
+        // style={{ paddingLeft: `${paddingRem}rem` }}
+      >
+        {parts.map((part, idx) => {
+          if (!part) return null;
 
-        // Color codes
-        if (part.match(/^#[0-9a-f]{3,6}$/i)) {
-          return (
-            <span key={idx} style={{ color: 'var(--google-blue)' }}>
-              {part}
-            </span>
-          );
-        }
-
-        // Delimiters
-        if (part.match(/^[{}:;]$/)) {
-          return (
-            <span key={idx} style={{ color: 'var(--google-red)' }}>
-              {part}
-            </span>
-          );
-        }
-
-        // CSS property names
-        if (
-          parts[idx - 1] === "{" ||
-          parts[idx + 1] === ":" ||
-          parts[idx - 1] === ";" ||
-          (idx > 0 && parts[idx - 1]?.includes("\n"))
-        ) {
-          const colonIndex = parts.indexOf(":", idx);
-          const semiOrBraceIndex = Math.min(
-            parts.indexOf(";", idx) !== -1 ? parts.indexOf(";", idx) : Infinity,
-            parts.indexOf("}", idx) !== -1 ? parts.indexOf("}", idx) : Infinity
-          );
-
-          if (colonIndex !== -1 && colonIndex < semiOrBraceIndex) {
-            // This is a property name
+          // HTML tags
+          if (part.match(/^<[^>]+>$/)) {
             return (
-              <span key={idx} style={{ color: 'var(--google-blue)' }}>
+              <span key={idx} className="text-blue-300">
                 {part}
               </span>
             );
           }
-        }
 
-        // CSS values
-        if (parts[idx - 1] === ":") {
-          return (
-            <span key={idx} style={{ color: 'var(--google-green)' }}>
-              {part}
-            </span>
-          );
-        }
+          // Quoted strings
+          if (part.match(/^["'][^"']*["']$/)) {
+            return (
+              <span key={idx} className="text-yellow-300">
+                {part}
+              </span>
+            );
+          }
 
-        // Default text
-        return part;
-      })}
-    </pre>
+          // Color codes
+          if (part.match(/^#[0-9a-f]{3,6}$/i)) {
+            return (
+              <span key={idx} className="text-orange-300">
+                {part}
+              </span>
+            );
+          }
+
+          // Delimiters
+          if (part.match(/^[{}:;]$/)) {
+            return (
+              <span key={idx} className="text-purple-300">
+                {part}
+              </span>
+            );
+          }
+
+          // CSS property names and values
+          if (
+            parts[idx - 1] === "{" ||
+            parts[idx + 1] === ":" ||
+            parts[idx - 1] === ";" ||
+            (idx > 0 && parts[idx - 1]?.includes("\n"))
+          ) {
+            const colonIndex = parts.indexOf(":", idx);
+            const semiOrBraceIndex = Math.min(
+              parts.indexOf(";", idx) !== -1
+                ? parts.indexOf(";", idx)
+                : Infinity,
+              parts.indexOf("}", idx) !== -1
+                ? parts.indexOf("}", idx)
+                : Infinity
+            );
+
+            if (colonIndex !== -1 && colonIndex < semiOrBraceIndex) {
+              // This is a property name
+              return (
+                <span key={idx} className="text-green-300">
+                  {part}
+                </span>
+              );
+            }
+          }
+
+          // CSS values (after colon, before semicolon/brace)
+          if (parts[idx - 1] === ":") {
+            return (
+              <span key={idx} className="text-pink-300">
+                {part}
+              </span>
+            );
+          }
+
+          // Default text
+          return part;
+        })}
+      </pre>
+    </div>
   );
 }

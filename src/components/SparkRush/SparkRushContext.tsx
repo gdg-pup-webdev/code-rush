@@ -12,8 +12,8 @@ interface SparkRushContextType {
   codeBlocks: CodeBlock[];
   setCodeBlocks: React.Dispatch<React.SetStateAction<CodeBlock[]>>;
   resetGame: () => void;
-  showSuccessFlash: boolean;
   showTargetFlash: boolean;
+  showSuccessOverlay: boolean;
 }
 
 const SparkRushContext = createContext<SparkRushContextType | undefined>(undefined);
@@ -51,8 +51,8 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }
   };
 
   
-  const [showSuccessFlash, setShowSuccessFlash] = useState(false);
   const [showTargetFlash, setShowTargetFlash] = useState(true);
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
 
   // initiate code blocks based on target
   useEffect(() => {
@@ -100,7 +100,7 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }
 
     if (checkIsWin(codeBlocks, challenge.codeBlocks)) {
       setGameState((prev) => ({ ...prev, score: prev.score + 1 }));
-      setShowSuccessFlash(true); // turn green
+      setShowSuccessOverlay(true);
 
       setTimeout(() => {
         const newChallenge = loadRandomChallenge();
@@ -109,7 +109,7 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }
         }
 
         setChallenge(newChallenge);
-        setShowSuccessFlash(false);
+        setShowSuccessOverlay(false);
       }, 1000);
     }
   }, [codeBlocks, challenge.id, challenge.codeBlocks, setChallenge, setGameState]);
@@ -122,8 +122,8 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }
     codeBlocks,
     setCodeBlocks,
     resetGame,
-    showSuccessFlash,
-    showTargetFlash
+    showTargetFlash,
+    showSuccessOverlay
   };
 
   return (

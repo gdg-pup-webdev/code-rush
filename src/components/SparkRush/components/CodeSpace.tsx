@@ -20,6 +20,11 @@ import { CodeBlockComponent } from "./CodeBlockComponent";
 import { CodeBlock } from "../types";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
+type Props = {
+  codeBlocks: CodeBlock[];
+  setCodeBlocks: React.Dispatch<React.SetStateAction<CodeBlock[]>>;
+};
+
 import { useSparkRush } from "../SparkRushContext";
 
 export const CodeSpace = () => {
@@ -49,7 +54,7 @@ export const CodeSpace = () => {
     >
       <SortableContext items={localBlocks.map((i) => i.id)}>
         <div
-          className={`flex-1 p-4 rounded-lg border-2 overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 bg-gray-100 border-gray-200 hover:border-gray-300`}
+          className={`flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 bg-slate-900  border-slate-700 hover:border-slate-600`}
         >
           {localBlocks.map((b) => (
             <SortableCodeBlockComponent key={b.id} codeBlock={b} />

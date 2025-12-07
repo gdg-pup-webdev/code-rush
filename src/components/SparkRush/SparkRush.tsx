@@ -8,10 +8,18 @@ import { PreviewPane } from "./components/PreviewPane";
 import { SparkRushProvider, useSparkRush } from "./SparkRushContext";
 
 const SparkRushGame = () => {
-  const { gameState, challenge, showSuccessFlash, showTargetFlash } = useSparkRush();
+  const { gameState, challenge, showTargetFlash, showSuccessOverlay } = useSparkRush();
 
   return (
     <div className="w-full h-screen bg-white font-sans overflow-hidden flex flex-col">
+       <div className={`absolute inset-0  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500  ${showSuccessOverlay ? 'visible opacity-100' : 'invisible opacity-0'} flex flex-col gap-8`}>
+          <div className="text-yellow-300 drop-shadow-sm drop-shadow-black text-9xl font-bold  ">
+            {gameState.score}
+          </div>
+          <div className="text-yellow-300 drop-shadow-sm drop-shadow-black text-3xl font-bold  ">
+            {`Time : ${formatTime(gameState.timeRemaining)}`}
+          </div>
+        </div> 
       {gameState.gameOver && <GameOverModal />}
 
       {/* Header */}
@@ -57,7 +65,7 @@ const SparkRushGame = () => {
           {/* Code Space */}
           <div
             className={`flex-1 flex flex-col transition-all duration-300 rounded-xl border-2 ${
-              showSuccessFlash ? "bg-green-100 border-green-400" : "bg-gray-50 border-gray-200"
+              "bg-gray-50 border-gray-200"
             }`}
           >
             <CodeSpace />
