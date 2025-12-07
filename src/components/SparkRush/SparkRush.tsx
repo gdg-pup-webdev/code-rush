@@ -1,11 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CodeSpace } from "./components/CodeSpace";
 import { formatTime } from "./utils";
 import { GameOverModal } from "./components/GameOverModal";
 import { PreviewPane } from "./components/PreviewPane";
 import { SparkRushProvider, useSparkRush } from "./SparkRushContext";
+import Link from "next/link";
 
 const SparkRushGame = () => {
   const { gameState, challenge, showTargetFlash, showSuccessOverlay } =
@@ -34,19 +35,21 @@ const SparkRushGame = () => {
       {/* countdown overlay */}
       <div
         className={`absolute inset-0  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 pointer-events-none  ${
-          gameState.timeRemaining <= 5 && !showSuccessOverlay? "visible opacity-100" : "invisible opacity-0"
+          gameState.timeRemaining <= 5 && !showSuccessOverlay
+            ? "visible opacity-100"
+            : "invisible opacity-0"
         } flex flex-col gap-8`}
       >
         <div className="text-yellow-300 drop-shadow-sm drop-shadow-black text-9xl font-bold  ">
           {gameState.timeRemaining}
-        </div> 
+        </div>
       </div>
 
       {gameState.gameOver && <GameOverModal />}
 
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-gray-200">
-        <h1 className="text-2xl font-bold">
+        <Link href="/" className="text-2xl font-bold">
           <span style={{ color: "var(--google-blue)" }}>S</span>
           <span style={{ color: "var(--google-red)" }}>p</span>
           <span style={{ color: "var(--google-yellow)" }}>a</span>
@@ -57,7 +60,7 @@ const SparkRushGame = () => {
           <span style={{ color: "var(--google-yellow)" }}>u</span>
           <span style={{ color: "var(--google-green)" }}>s</span>
           <span style={{ color: "var(--google-blue)" }}>h</span>
-        </h1>
+        </Link>
         <div className="flex items-center gap-6">
           <div
             className={`text-2xl font-semibold transition-colors flex items-center gap-2 ${
@@ -108,6 +111,38 @@ const SparkRushGame = () => {
 };
 
 export const SparkRush = () => {
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+      setCountdown(3);
+    };
+  }, []);
+
+  if (countdown > 0) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        {/* countdown overlay */}
+        <div
+          className={`absolute inset-0  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 pointer-events-none  ${
+            true
+              ? "visible opacity-100"
+              : "invisible opacity-0"
+          } flex flex-col gap-8`}
+        >
+          <div className="text-yellow-300 drop-shadow-sm drop-shadow-black text-9xl font-bold  ">
+            {countdown}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <SparkRushProvider>
       <SparkRushGame />
