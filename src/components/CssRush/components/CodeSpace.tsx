@@ -11,16 +11,20 @@ import {
   closestCorners,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
-import { CodeBlock } from "../types";
+
+import people from "../people.json";
 import { SortableCodeBlockComponent } from "./SortableCodeBlockComponent";
 import { CodeBlockComponent } from "./CodeBlockComponent";
- 
+import { CodeBlock } from "../types";
+
+
 type Props = {
     codeBlocks: CodeBlock[];
     setCodeBlocks: React.Dispatch<React.SetStateAction<CodeBlock[]>>;
 }
 
-export const CodeSpace = ({codeBlocks, setCodeBlocks} : Props) => { 
+
+export const CodeSpace = ({codeBlocks, setCodeBlocks}: Props) => { 
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
@@ -34,15 +38,12 @@ export const CodeSpace = ({codeBlocks, setCodeBlocks} : Props) => {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragEnd}
     >
-      <SortableContext items={codeBlocks.map((i) => i.name)} strategy={() => {}}>
-        <div className="flex flex-col gap-1 w-300 border-3 border-black">
-          {codeBlocks.map(({ name, description }) => (
+      <SortableContext items={codeBlocks.map((i) => i.id)}  >
+        <div className="flex flex-col gap-1 w-full border-3 border-black">
+          {codeBlocks.map((b) => (
             <SortableCodeBlockComponent
-              key={name}
-              codeBlock={{
-                id: name,
-                content: description
-              }}
+              key={b.id}
+              codeBlock={b}
             />
           ))}
         </div>
@@ -50,13 +51,7 @@ export const CodeSpace = ({codeBlocks, setCodeBlocks} : Props) => {
       <DragOverlay>
         {activeId ? (
           <CodeBlockComponent
-            codeBlock={(() => {
-              const item = codeBlocks.find((item) => item.name === activeId)!;
-              return {
-                id: item.name,
-                content: item?.description,
-              };
-            })()}
+            codeBlock={codeBlocks.find((b) => b.id === activeId)!}
           />
         ) : null}
       </DragOverlay>
@@ -72,8 +67,8 @@ export const CodeSpace = ({codeBlocks, setCodeBlocks} : Props) => {
 
     if (active.id !== over.id) {
       setCodeBlocks((items) => {
-        const oldIndex = items.findIndex((i) => i.name === active.id);
-        const newIndex = items.findIndex((i) => i.name === over.id);
+        const oldIndex = items.findIndex((i) => i.id === active.id);
+        const newIndex = items.findIndex((i) => i.id === over.id);
 
         return arrayMove(items, oldIndex, newIndex);
       });

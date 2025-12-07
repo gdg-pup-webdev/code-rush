@@ -15,69 +15,26 @@ import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 import people from "./people.json";
 import { SortableCodeBlockComponent } from "./components/SortableCodeBlockComponent";
 import { CodeBlockComponent } from "./components/CodeBlockComponent";
+import { CodeSpace } from "./components/CodeSpace";
+
+
+const convertPeopleToCodeBlock = () => {
+  return people.map((person) => ({
+    id: person.name,
+    content: person.description
+  }))
+}
+
 
 export const CssRush = () => {
-  const [items, setItems] = useState(people);
-  const [activeId, setActiveId] = useState(null);
-  const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
-  return (
-    <DndContext
-      autoScroll={false}
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragEnd}
-    >
-      <SortableContext items={items.map((i) => i.name)} strategy={() => {}}>
-        <div className="flex flex-col gap-1 w-300 border-3 border-black">
-          {items.map(({ name, description }) => (
-            <SortableCodeBlockComponent
-              key={name}
-              codeBlock={{
-                id: name,
-                content: description
-              }}
-            />
-          ))}
-        </div>
-      </SortableContext>
-      <DragOverlay>
-        {activeId ? (
-          <CodeBlockComponent
-            codeBlock={(() => {
-              const item = items.find((item) => item.name === activeId)!;
-              return {
-                id: item.name,
-                content: item?.description,
-              };
-            })()}
-          />
-        ) : null}
-      </DragOverlay>
-    </DndContext>
-  );
 
-  function handleDragStart(event) {
-    setActiveId(event.active.id);
-  }
 
-  function handleDragOver(event) {
-    const { active, over } = event;
+  const [codeBlocks, setCodeBlocks] = useState(convertPeopleToCodeBlock());
 
-    if (active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.findIndex((i) => i.name === active.id);
-        const newIndex = items.findIndex((i) => i.name === over.id);
 
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
-  }
-
-  function handleDragEnd() {
-    setActiveId(null);
-  }
-};
+  return <>
+  
+    <CodeSpace codeBlocks={codeBlocks} setCodeBlocks={setCodeBlocks}/>
+  </>
+}

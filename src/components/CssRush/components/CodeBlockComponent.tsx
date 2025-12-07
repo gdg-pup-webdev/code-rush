@@ -3,8 +3,8 @@ import { CodeBlock } from '../types';
 
 type Props = React.HTMLAttributes<HTMLDivElement> & {
   codeBlock: CodeBlock; 
-  style: React.CSSProperties;
-  ref: React.ForwardedRef<HTMLDivElement>;
+  style?: React.CSSProperties;
+  ref?: React.ForwardedRef<HTMLDivElement>;
 }
 
 
@@ -12,14 +12,10 @@ export const CodeBlockComponent = ({codeBlock, style, ref, ...rest}: Props) => {
   return (
     <div
       ref={ref}
-      style={{
-        display: 'inline-block',
-        backgroundColor: '#ddd',
-        padding: '.5rem',
-        width: '100px',
-        margin: '0 1rem 1rem 0',
+      style={{ 
         ...style,
       }}
+      className='w-full bg-gray-200'
       {...rest}
     >
       {codeBlock.id}
