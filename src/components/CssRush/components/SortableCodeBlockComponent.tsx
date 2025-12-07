@@ -16,12 +16,14 @@ export function SortableCodeBlockComponent({codeBlock, ...rest} : Props) {
     setNodeRef,
     transform,
     transition,
+    isDragging
   } = useSortable({id: codeBlock.id});
 
 
   return (
     <CodeBlockComponent
       codeBlock={codeBlock}
+      isDragging={isDragging}
       ref={setNodeRef} 
       {...attributes}
       {...listeners}

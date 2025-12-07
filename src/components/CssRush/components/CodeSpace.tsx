@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   DndContext,
   MouseSensor,
@@ -11,23 +11,32 @@ import {
   closestCorners,
   DragStartEvent,
   DragOverEvent,
+  DragEndEvent,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
- 
+
 import { SortableCodeBlockComponent } from "./SortableCodeBlockComponent";
 import { CodeBlockComponent } from "./CodeBlockComponent";
 import { CodeBlock } from "../types";
-
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 type Props = {
-    codeBlocks: CodeBlock[];
-    setCodeBlocks: React.Dispatch<React.SetStateAction<CodeBlock[]>>;
-}
+  codeBlocks: CodeBlock[];
+  setCodeBlocks: React.Dispatch<React.SetStateAction<CodeBlock[]>>;
+};
 
+export const CodeSpace = ({ codeBlocks, setCodeBlocks }: Props) => {
+  // 🔥 Local state for sorting
+  const [localBlocks, setLocalBlocks] = useState<CodeBlock[]>([]);
 
-export const CodeSpace = ({codeBlocks, setCodeBlocks}: Props) => { 
   const [activeId, setActiveId] = useState<string | null>(null);
+
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
+
+  // Sync initial / external changes into localBlocks
+  useEffect(() => {
+    setLocalBlocks(codeBlocks);
+  }, [codeBlocks]);
 
   return (
     <DndContext
@@ -38,38 +47,39 @@ export const CodeSpace = ({codeBlocks, setCodeBlocks}: Props) => {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragEnd}
+      modifiers={[restrictToVerticalAxis]}
     >
-      <SortableContext items={codeBlocks.map((i) => i.id)}  >
-        <div className="bg-gray-900 flex flex-col gap-1 w-50 border-3 border-black">
-          {codeBlocks.map((b) => (
-            <SortableCodeBlockComponent
-              key={b.id}
-              codeBlock={b}
-            />
+      <SortableContext items={localBlocks.map((i) => i.id)}>
+        <div
+          className={`flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 bg-slate-900/30 border-slate-700 hover:border-slate-600`}
+        >
+          {localBlocks.map((b) => (
+            <SortableCodeBlockComponent key={b.id} codeBlock={b} />
           ))}
         </div>
       </SortableContext>
+
       <DragOverlay>
         {activeId ? (
           <CodeBlockComponent
-            codeBlock={codeBlocks.find((b) => b.id === activeId)!}
+            codeBlock={localBlocks.find((b) => b.id === activeId)!}
+            isOverlay
           />
         ) : null}
       </DragOverlay>
     </DndContext>
   );
 
-  function handleDragStart(event : DragStartEvent) {
+  function handleDragStart(event: DragStartEvent) {
     setActiveId(event.active.id as string);
   }
 
-  function handleDragOver(event : DragOverEvent) {
+  function handleDragOver(event: DragOverEvent) {
     const { active, over } = event;
-
     if (!over) return;
 
     if (active.id !== over.id) {
-      setCodeBlocks((items) => {
+      setLocalBlocks((items) => {
         const oldIndex = items.findIndex((i) => i.id === active.id);
         const newIndex = items.findIndex((i) => i.id === over.id);
 
@@ -78,7 +88,10 @@ export const CodeSpace = ({codeBlocks, setCodeBlocks}: Props) => {
     }
   }
 
-  function handleDragEnd() {
+  function handleDragEnd(event: DragEndEvent) {
     setActiveId(null);
+
+    // Commit sorted order to parent
+    setCodeBlocks(localBlocks);
   }
 };

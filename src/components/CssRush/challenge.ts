@@ -30,3 +30,23 @@ export function shuffleArray<T>(array: T[]): T[] {
   }
   return shuffled;
 }
+
+export function generateHtml(blocks: CodeBlock[]): string {
+  const code = blocks.map((block) => block.content).join("");
+
+  return code
+    .replace(/\n/g, "")       // remove newlines
+    .replace(/\t/g, "")       // remove tabs
+    .replace(/ +/g, "");      // remove multiple spaces
+}
+
+
+export  const checkIsWin = (
+    userCodeBlocks: CodeBlock[],
+    targetCodeBlocks: CodeBlock[]
+  ) => {
+    const userCode = generateHtml(userCodeBlocks);
+    const targetCode = generateHtml(targetCodeBlocks);
+
+    return userCode === targetCode;
+  };

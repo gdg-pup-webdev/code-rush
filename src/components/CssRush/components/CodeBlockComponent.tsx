@@ -5,27 +5,19 @@ type Props = React.HTMLAttributes<HTMLDivElement> & {
   codeBlock: CodeBlock;
   style?: React.CSSProperties;
   ref?: React.ForwardedRef<HTMLDivElement>;
+  isDragging?: boolean;
+  isOverlay?: boolean;
 };
 
 export const CodeBlockComponent = ({
   codeBlock,
   style,
   ref,
+  isDragging,
+  isOverlay,
   ...rest
 }: Props) => {
   return (
-    // <div
-    //   ref={ref}
-    //   style={{
-    //     ...style,
-    //   }}
-    //   className="text-white w-full border border-white px-3 py-2 rounded-md bg-slate-900/40"
-    //   {...rest}
-    // >
-    //   {codeBlock.id}
-    //   <br />
-    //   {codeBlock.content}
-    // </div>
 
     // when when being dragged
     <div
@@ -34,7 +26,11 @@ export const CodeBlockComponent = ({
         ...style,
       }}
       className={
-        `flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto border-1 border-white `
+        `flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto   ${
+          isDragging ? " opacity-0 " : ""
+
+        } ${
+          isOverlay ? "bg-gray-600" : " "} `
       }
       {...rest}
     >
