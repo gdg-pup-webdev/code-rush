@@ -8,12 +8,13 @@ interface CodeSpaceProps {
   code: CodeBlock[];
   setDroppableRef: (ref: HTMLDivElement | null) => void;
   activeId: string | null;
+  showSuccessFlash?: boolean;
 }
 
 /**
  * Code space where blocks are dropped and arranged
  */
-export function CodeSpace({ code, setDroppableRef, activeId }: CodeSpaceProps) {
+export function CodeSpace({ code, setDroppableRef, activeId, showSuccessFlash }: CodeSpaceProps) {
   return (
     <div className="flex-1 flex flex-col">
       <h3 className="text-sm font-semibold text-slate-300 mb-2 uppercase tracking-wide">
@@ -21,7 +22,11 @@ export function CodeSpace({ code, setDroppableRef, activeId }: CodeSpaceProps) {
       </h3>
       <div
         ref={setDroppableRef}
-        className="flex-1 p-4 bg-slate-900/30 rounded-lg border border-slate-700 hover:border-slate-600 transition-colors overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)]"
+        className={`flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 ${
+          showSuccessFlash
+            ? 'bg-green-500/40 border-green-400'
+            : 'bg-slate-900/30 border-slate-700 hover:border-slate-600'
+        }`}
       >
         <SortableContext items={code.map(c => c.id)}>
           {code.length === 0 ? (

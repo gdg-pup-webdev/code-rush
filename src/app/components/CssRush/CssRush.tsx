@@ -40,6 +40,7 @@ export function CssRush({ gameDurationSeconds = 180 }: GameConfigProps) {
     return createCodeBlocks(shuffled);
   });
   const [isClient, setIsClient] = useState(false);
+  const [showSuccessFlash, setShowSuccessFlash] = useState(false);
 
   // Hooks
   const [holdingBlockId, setHoldingBlockId] = useState<string | null>(null);
@@ -102,10 +103,16 @@ export function CssRush({ gameDurationSeconds = 180 }: GameConfigProps) {
 
     if (userCode === targetCode) {
       setGameState((prev) => ({ ...prev, score: prev.score + 1 }));
-      const newTarget = getRandomTarget();
-      setCurrentTarget(newTarget);
-      const shuffled = shuffleArray(newTarget.blocks);
-      setCode(createCodeBlocks(shuffled));
+      setShowSuccessFlash(true);
+      
+      // Wait 0.5 second before loading next target
+      setTimeout(() => {
+        const newTarget = getRandomTarget();
+        setCurrentTarget(newTarget);
+        const shuffled = shuffleArray(newTarget.blocks);
+        setCode(createCodeBlocks(shuffled));
+        setShowSuccessFlash(false);
+      }, 500);
     }
   }, [code, currentTarget]);
 
@@ -177,6 +184,7 @@ export function CssRush({ gameDurationSeconds = 180 }: GameConfigProps) {
                 code={code}
                 setDroppableRef={setDroppableRef}
                 activeId={holdingBlockId}
+                showSuccessFlash={showSuccessFlash}
               />
             </Droppable>
           </div>
