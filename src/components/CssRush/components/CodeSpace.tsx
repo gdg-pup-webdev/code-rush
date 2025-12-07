@@ -11,13 +11,16 @@ import {
   closestCorners,
 } from "@dnd-kit/core";
 import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { CodeBlock } from "../types";
+import { SortableCodeBlockComponent } from "./SortableCodeBlockComponent";
+import { CodeBlockComponent } from "./CodeBlockComponent";
+ 
+type Props = {
+    codeBlocks: CodeBlock[];
+    setCodeBlocks: React.Dispatch<React.SetStateAction<CodeBlock[]>>;
+}
 
-import people from "./people.json";
-import { SortableCodeBlockComponent } from "./components/SortableCodeBlockComponent";
-import { CodeBlockComponent } from "./components/CodeBlockComponent";
-
-export const CssRush = () => {
-  const [items, setItems] = useState(people);
+export const CodeSpace = ({codeBlocks, setCodeBlocks} : Props) => { 
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
 
@@ -31,9 +34,9 @@ export const CssRush = () => {
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragEnd}
     >
-      <SortableContext items={items.map((i) => i.name)} strategy={() => {}}>
+      <SortableContext items={codeBlocks.map((i) => i.name)} strategy={() => {}}>
         <div className="flex flex-col gap-1 w-300 border-3 border-black">
-          {items.map(({ name, description }) => (
+          {codeBlocks.map(({ name, description }) => (
             <SortableCodeBlockComponent
               key={name}
               codeBlock={{
@@ -48,7 +51,7 @@ export const CssRush = () => {
         {activeId ? (
           <CodeBlockComponent
             codeBlock={(() => {
-              const item = items.find((item) => item.name === activeId)!;
+              const item = codeBlocks.find((item) => item.name === activeId)!;
               return {
                 id: item.name,
                 content: item?.description,
@@ -68,7 +71,7 @@ export const CssRush = () => {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      setItems((items) => {
+      setCodeBlocks((items) => {
         const oldIndex = items.findIndex((i) => i.name === active.id);
         const newIndex = items.findIndex((i) => i.name === over.id);
 

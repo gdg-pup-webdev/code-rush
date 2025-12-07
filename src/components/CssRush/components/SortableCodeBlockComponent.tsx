@@ -1,27 +1,27 @@
 import React from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
+import { CodeBlockComponent } from './CodeBlockComponent';
+import { CodeBlock } from '../types';
+ 
+type Props = {
+  codeBlock: CodeBlock;
+}
 
-import {Item, ItemProps} from './Item';
 
-type SortableItemProps = {
-  name: string;
-  description: string;
-};
-
-export function SortableItem({ ...props} : SortableItemProps) {
+export function SortableCodeBlockComponent({codeBlock} : Props) {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-  } = useSortable({id: props.name});
+  } = useSortable({id: codeBlock.id});
 
   return (
-    <Item
-      ref={setNodeRef}
-      {...props}
+    <CodeBlockComponent
+      codeBlock={codeBlock}
+      ref={setNodeRef} 
       {...attributes}
       {...listeners}
       style={{

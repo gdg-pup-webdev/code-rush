@@ -1,17 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { useDroppable } from "@dnd-kit/core";
+import React, { useState, useEffect } from "react"; 
 import {
   targets,
   getRandomTarget,
