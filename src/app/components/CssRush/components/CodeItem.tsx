@@ -1,14 +1,12 @@
-import React from 'react';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import React, { forwardRef } from "react"; 
 
 /**
  * Syntax highlighting for code content
  */
 function SyntaxHighlightedContent({ content }: { content: string }) {
   // Split into lines first (before trimming)
-  const lines = content.split('\n');
-  
+  const lines = content.split("\n");
+
   // Find the first non-empty line to get base indentation
   const firstNonEmptyLine = lines.find((l) => l.trim());
   const baseIndent = firstNonEmptyLine
@@ -17,9 +15,11 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
 
   // Now trim start and end whitespace from the entire content
   const trimmedContent = content.trim();
-  
+
   // Tokenize and highlight the content
-  const parts = trimmedContent.split(/(<[^>]+>|:[^;}\n]+|"[^"]*"|'[^']*'|[#][0-9a-f]{3,6}|[{}:;])/);
+  const parts = trimmedContent.split(
+    /(<[^>]+>|:[^;}\n]+|"[^"]*"|'[^']*'|[#][0-9a-f]{3,6}|[{}:;])/
+  );
 
   // Calculate padding (2px per space = 0.125rem)
   const paddingRem = baseIndent * 1;
@@ -87,44 +87,26 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
 /**
  * A sortable code block in the code space
  */
-export function CodeItem({
-  id,
-  content,
-  isDragging,
-}: {
+
+type CodeItemProps = React.HTMLAttributes<HTMLDivElement> & {
   id: string;
   content: string;
-  isDragging: boolean;
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging: isSorting } =
-    useSortable({ id });
+};
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    opacity: isSorting ? 0.5 : 1,
-  };
-
-  return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      {...listeners}
-      className="flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto"
-    >
-      {/* Drag Handle */}
+export const CodeItem = forwardRef<HTMLDivElement, CodeItemProps>(
+  ({ id, content, ...rest }, ref) => {
+    return (
       <div
-        className="shrink-0 w-1 bg-slate-500 rounded hover:bg-slate-400 transition-colors mt-1"
-        title="Drag to reorder"
-      />
-
-      {/* Code Content */}
-      <div className={`flex-1 px-3 py-1 rounded transition-colors text-xs select-none pointer-events-none ${
-        isSorting ? 'border border-slate-500' : 'border border-transparent group-hover:border-slate-600'
-      }`}>
-        <SyntaxHighlightedContent content={content} />
+        ref={ref}
+        className="flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto border-1 border-white"
+        {...rest}
+      >
+        <div className="flex-1 px-3 py-1 rounded transition-colors text-xs select-none pointer-events-none">
+          <div className="text-white">
+            <SyntaxHighlightedContent content={content} />
+          </div>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);

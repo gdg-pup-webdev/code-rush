@@ -1,50 +1,97 @@
-import React from 'react';
-import { SortableContext } from '@dnd-kit/sortable';
-import { useDroppable } from '@dnd-kit/core';
-import { CodeBlock } from '../types';
-import { CodeItem } from './CodeItem';
+"use client";
+
+import React, { useEffect, useState } from "react";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
+import { CodeBlock } from "../types";
+import { CodeItem } from "./CodeItem";
+import {
+  closestCenter,
+  closestCorners,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import { Target } from "../targets";
+import { createCodeBlocks, shuffleArray } from "../utils";
+import { SortableCodeItem } from "./SortableCodeItem";
 
 interface CodeSpaceProps {
-  code: CodeBlock[];
-  setDroppableRef: (ref: HTMLDivElement | null) => void;
-  activeId: string | null;
-  showSuccessFlash?: boolean;
+  codeBlocks: CodeBlock[];
+  setCodeBlocks: (blocks: CodeBlock[]) => void;
 }
 
 /**
  * Code space where blocks are dropped and arranged
  */
-export function CodeSpace({ code, setDroppableRef, activeId, showSuccessFlash }: CodeSpaceProps) {
+export function CodeSpace({ codeBlocks, setCodeBlocks }: CodeSpaceProps) {
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const handleDragStart = (event: any) => {
+    setActiveId(event.active.id);
+  };
+
+  function handleDragOver(event: any) {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      const oldIndex = codeBlocks.findIndex((i) => i.id === active.id);
+      const newIndex = codeBlocks.findIndex((i) => i.id === over.id);
+
+      setCodeBlocks(arrayMove(codeBlocks, oldIndex, newIndex));
+    }
+  }
+
+  // Handlers
+  const handleDragEnd = (event: any) => {
+    setActiveId(null);
+     
+  };
+
+  // Drag and drop setup
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
   return (
-    <div className="flex-1 flex flex-col">
-      <h3 className="text-sm font-semibold text-slate-300 mb-2 uppercase tracking-wide">
-        Code Space
-      </h3>
-      <div
-        ref={setDroppableRef}
-        className={`flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 ${
-          showSuccessFlash
-            ? 'bg-green-500/40 border-green-400'
-            : 'bg-slate-900/30 border-slate-700 hover:border-slate-600'
-        }`}
-      >
-        <SortableContext items={code.map(c => c.id)}>
-          {code.length === 0 ? (
-            <div className="h-full flex items-center justify-center text-slate-500 text-sm">
-              Drag blocks here to build your code
-            </div>
-          ) : (
-            code.map(block => (
-              <CodeItem
-                key={block.id}
-                id={block.id}
-                content={block.content}
-                isDragging={activeId === block.id}
-              />
-            ))
-          )}
-        </SortableContext>
-      </div>
-    </div>
+    <DndContext
+      sensors={sensors}
+      // collisionDetection={closestCorners}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDragOver={handleDragOver}
+      onDragCancel={handleDragEnd}
+    >
+      <SortableContext items={codeBlocks.map((c) => c.id)}>
+        <div
+          className={`flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 ${"bg-slate-900/30 border-slate-700 hover:border-slate-600"}`}
+        >
+          {codeBlocks.map((block) => (
+            <SortableCodeItem
+              key={block.id}
+              id={block.id}
+              content={block.content} 
+            />
+          ))}
+        </div>
+      </SortableContext>
+
+      <DragOverlay>
+        {/* {activeId && (
+          <GhostCodeItem content={codeBlocks.find((c) => c.id === activeId)!.content} />
+        )} */}
+      </DragOverlay>
+    </DndContext>
   );
 }
