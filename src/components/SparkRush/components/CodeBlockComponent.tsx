@@ -24,14 +24,13 @@ export const CodeBlockComponent = ({
       style={{
         ...style,
       }}
-      className={`flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto    ${
+      className={`flex items-start gap-2 mb-1 group cursor-grab active:cursor-grabbing select-none pointer-events-auto rounded-md  ${
         isDragging ? " opacity-0 " : ""
-      } ${isOverlay ? "bg-gray-600" : " hover:bg-gray-800"} `}
+      } ${isOverlay ? "bg-gray-200" : " hover:bg-gray-200"} `}
       {...rest}
     >
-      <div className="flex-1 px-3 py-1 rounded transition-colors text-xs select-none pointer-events-none">
-        <div className="text-white">
-          {/* {codeBlock.content} */}
+      <div className="flex-1 px-3 py-2 rounded-md transition-colors text-xs select-none pointer-events-none">
+        <div className="text-gray-800">
           <SyntaxHighlightedContent content={codeBlock.content} />
         </div>
       </div>
@@ -40,30 +39,16 @@ export const CodeBlockComponent = ({
 };
 
 function SyntaxHighlightedContent({ content }: { content: string }) {
-  // Split into lines first (before trimming)
-  const lines = content.split("\n");
-
-  // Find the first non-empty line to get base indentation
-  const firstNonEmptyLine = lines.find((l) => l.trim());
-  const baseIndent = firstNonEmptyLine
-    ? (firstNonEmptyLine.match(/^(\s*)/) || [])[1]?.length || 0
-    : 0;
-
-  // Now trim start and end whitespace from the entire content
-  const trimmedContent = content.trim();
+  // ... (rest of the function is the same)
 
   // Tokenize and highlight the content
-  const parts = trimmedContent.split(
+  const parts = content.split(
     /(<[^>]+>|"[^"]*"|'[^']*'|[#][0-9a-f]{3,6}|[{}:;])/
   );
 
-  // Calculate padding (2px per space = 0.125rem)
-  const paddingRem = baseIndent * 1;
-
   return (
     <pre
-      className="font-mono whitespace-pre-wrap leading-relaxed text-slate-100 text-xl"
-      style={{ paddingLeft: `${paddingRem}rem` }}
+      className="font-mono whitespace-pre-wrap leading-relaxed text-gray-800 text-base"
     >
       {parts.map((part, idx) => {
         if (!part) return null;
@@ -71,7 +56,7 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
         // HTML tags
         if (part.match(/^<[^>]+>$/)) {
           return (
-            <span key={idx} className="text-blue-300">
+            <span key={idx} style={{ color: 'var(--google-red)' }}>
               {part}
             </span>
           );
@@ -80,7 +65,7 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
         // Quoted strings
         if (part.match(/^["'][^"']*["']$/)) {
           return (
-            <span key={idx} className="text-yellow-300">
+            <span key={idx} style={{ color: 'var(--google-green)' }}>
               {part}
             </span>
           );
@@ -89,7 +74,7 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
         // Color codes
         if (part.match(/^#[0-9a-f]{3,6}$/i)) {
           return (
-            <span key={idx} className="text-orange-300">
+            <span key={idx} style={{ color: 'var(--google-blue)' }}>
               {part}
             </span>
           );
@@ -98,13 +83,13 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
         // Delimiters
         if (part.match(/^[{}:;]$/)) {
           return (
-            <span key={idx} className="text-purple-300">
+            <span key={idx} style={{ color: 'var(--google-red)' }}>
               {part}
             </span>
           );
         }
 
-        // CSS property names and values
+        // CSS property names
         if (
           parts[idx - 1] === "{" ||
           parts[idx + 1] === ":" ||
@@ -120,17 +105,17 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
           if (colonIndex !== -1 && colonIndex < semiOrBraceIndex) {
             // This is a property name
             return (
-              <span key={idx} className="text-green-300">
+              <span key={idx} style={{ color: 'var(--google-blue)' }}>
                 {part}
               </span>
             );
           }
         }
 
-        // CSS values (after colon, before semicolon/brace)
+        // CSS values
         if (parts[idx - 1] === ":") {
           return (
-            <span key={idx} className="text-pink-300">
+            <span key={idx} style={{ color: 'var(--google-green)' }}>
               {part}
             </span>
           );
