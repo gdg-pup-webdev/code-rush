@@ -1,8 +1,14 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { GameState, Challenge, CodeBlock } from './types';
-import { checkIsWin, loadRandomChallenge, shuffleArray } from './challenge';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { GameState, Challenge, CodeBlock } from "./types";
+import { checkIsWin, loadRandomChallenge, shuffleArray } from "./challenge";
 
 interface SparkRushContextType {
   gameState: GameState;
@@ -16,12 +22,14 @@ interface SparkRushContextType {
   showSuccessOverlay: boolean;
 }
 
-const SparkRushContext = createContext<SparkRushContextType | undefined>(undefined);
+const SparkRushContext = createContext<SparkRushContextType | undefined>(
+  undefined
+);
 
 export const useSparkRush = () => {
   const context = useContext(SparkRushContext);
   if (!context) {
-    throw new Error('useSparkRush must be used within a SparkRushProvider');
+    throw new Error("useSparkRush must be used within a SparkRushProvider");
   }
   return context;
 };
@@ -30,9 +38,11 @@ interface SparkRushProviderProps {
   children: ReactNode;
 }
 
-export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }) => {
+export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({
+  children,
+}) => {
   const [gameState, setGameState] = useState<GameState>({
-    timeRemaining: 180,
+    timeRemaining: 90,
     score: 0,
     gameActive: true,
     gameOver: false,
@@ -50,7 +60,6 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }
     });
   };
 
-  
   const [showTargetFlash, setShowTargetFlash] = useState(true);
   const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
 
@@ -69,7 +78,7 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }
     setShowTargetFlash(true);
     setTimeout(() => {
       setShowTargetFlash(false);
-    }, 1000);
+    }, 1500);
   }, [challenge]);
 
   // Timer
@@ -103,16 +112,25 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }
       setShowSuccessOverlay(true);
 
       setTimeout(() => {
-        const newChallenge = loadRandomChallenge();
-        while (newChallenge.id === challenge.id) {
-          newChallenge.id = loadRandomChallenge().id;
+        let newChallenge = loadRandomChallenge();
+        while (
+          newChallenge.title === challenge.title &&
+          newChallenge.description === challenge.description
+        ) {
+          newChallenge = loadRandomChallenge();
         }
 
         setChallenge(newChallenge);
         setShowSuccessOverlay(false);
-      }, 1000);
+      }, 500);
     }
-  }, [codeBlocks, challenge.id, challenge.codeBlocks, setChallenge, setGameState]);
+  }, [
+    codeBlocks,
+    challenge.id,
+    challenge.codeBlocks,
+    setChallenge,
+    setGameState,
+  ]);
 
   const value = {
     gameState,
@@ -123,7 +141,7 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({ children }
     setCodeBlocks,
     resetGame,
     showTargetFlash,
-    showSuccessOverlay
+    showSuccessOverlay,
   };
 
   return (
