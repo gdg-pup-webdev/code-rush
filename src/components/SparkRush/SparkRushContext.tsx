@@ -41,8 +41,10 @@ interface SparkRushProviderProps {
 export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({
   children,
 }) => {
+
+  const timeRemaining = 90;
   const [gameState, setGameState] = useState<GameState>({
-    timeRemaining: 90,
+    timeRemaining: timeRemaining,
     score: 0,
     gameActive: true,
     gameOver: false,
@@ -53,7 +55,7 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({
   const resetGame = () => {
     setChallenge(loadRandomChallenge());
     setGameState({
-      timeRemaining: 180,
+      timeRemaining: timeRemaining,
       score: 0,
       gameActive: true,
       gameOver: false,
