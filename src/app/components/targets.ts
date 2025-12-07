@@ -1,57 +1,84 @@
-export const targets = [
+export interface Target {
+  id: string;
+  blocks: string[];
+}
+
+/**
+ * Generate HTML from target blocks
+ */
+export function generateTargetHtml(blocks: string[]): string {
+  const code = blocks.join('');
+  return `<html><body style="margin:0;padding:0;">${code}</body></html>`;
+}
+
+export const targets: Target[] = [
   {
     id: 'target-1',
-    html: `
-      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
-        <p style="font-size: 2.25rem; font-weight: 700; color: #3b82f6;">Hello, World!</p>
-      </div>
-    `,
-    solution: [
-      '<div>',
-      '<p>',
-      'Hello, World!',
-      '</p>',
-      '</div>',
-      '<style>',
-      'div { display: flex; justify-content: center; align-items: center; height: 100%; }',
-      'p { font-size: 2.25rem; font-weight: 700; color: #3b82f6; }',
+    blocks: [
+      '<div></div>\n',
+      '<style>\n',
+      '  div {\n',
+      '    background-color: #3b82f6;\nwidth: 6rem;\nheight: 6rem;\n',
+      '  }\n',
       '</style>',
     ]
   },
   {
     id: 'target-2',
-    html: `
-      <div style="background-color: #ef4444; width: 8rem; height: 8rem;"></div>
-    `,
-    solution: [
-      '<div>',
-      '</div>',
-      '<style>',
-      'div { background-color: #ef4444; width: 8rem; height: 8rem; }',
+    blocks: [
+      '<h1>Hello</h1>\n',
+      '<style>\n',
+      '  h1 {\n',
+      '    color: #ef4444;\n',
+      '  }\n',
       '</style>',
     ]
   },
   {
     id: 'target-3',
-    html: `
-      <div style="display: flex; justify-content: space-around; align-items: center; width: 100%; height: 100%; background-color: #f3f4f6;">
-        <div style="background-color: #3b82f6; width: 4rem; height: 4rem; border-radius: 9999px;"></div>
-        <div style="background-color: #ef4444; width: 4rem; height: 4rem;"></div>
-        <div style="background-color: #10b981; width: 4rem; height: 4rem; transform: rotate(45deg);"></div>
-      </div>
-    `,
-    solution: [
-      '<div>',
-      '<div></div>',
-      '<div></div>',
-      '<div></div>',
-      '</div>',
-      '<style>',
-      'div:first-child { display: flex; justify-content: space-around; align-items: center; width: 100%; height: 100%; background-color: #f3f4f6; }',
-      'div:first-child div:nth-child(1) { background-color: #3b82f6; width: 4rem; height: 4rem; border-radius: 9999px; }',
-      'div:first-child div:nth-child(2) { background-color: #ef4444; width: 4rem; height: 4rem; }',
-      'div:first-child div:nth-child(3) { background-color: #10b981; width: 4rem; height: 4rem; transform: rotate(45deg); }',
+    blocks: [
+      '<div class="root">\n',
+      '  <div></div>\n',
+      '  <div></div>\n',
+      '</div>\n',
+      '<style>\n',
+      '  .root {\n',
+      '    display: flex;\ngap: 1rem;\n',
+      '  }\n',
+      '  div:nth-child(2) {\n',
+      '    background-color: #10b981;\nwidth: 4rem;\nheight: 4rem;\n',
+      '  }\n',
+      '  div:nth-child(3) {\n',
+      '    background-color: #f59e0b;\nwidth: 4rem;\nheight: 4rem;\n',
+      '  }\n',
       '</style>',
     ]
-  }
+  },
+  {
+    id: 'target-4',
+    blocks: [
+      '<p>Center Me</p>\n',
+      '<style>\n',
+      '  p {\n',
+      '    text-align: center;\nmargin-top: 3rem;\ncolor: #3b82f6;\n',
+      '  }\n',
+      '</style>',
+    ]
+  },
+  {
+    id: 'target-5',
+    blocks: [
+      '<div></div>\n',
+      '<style>\n',
+      '  div {\n',
+      '    background-color: #ec4899;\nwidth: 5rem;\nheight: 5rem;\nborder-radius: 9999px;\n',
+      '  }\n',
+      '</style>',
+    ]
+  }, 
 ];
+
+// Utility function to get a random target
+export const getRandomTarget = (): Target => {
+  return targets[Math.floor(Math.random() * targets.length)];
+};

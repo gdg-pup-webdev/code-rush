@@ -1,4 +1,4 @@
-import CssRush from "./components/CssRush";
+import {CssRush} from "./components/CssRush";
 
 export default function Home() {
   return (
