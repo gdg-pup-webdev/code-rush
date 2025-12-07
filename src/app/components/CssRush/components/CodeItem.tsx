@@ -111,7 +111,7 @@ export function CodeItem({
       style={style}
       {...attributes}
       {...listeners}
-      className="flex items-start gap-2 mb-2 group cursor-grab active:cursor-grabbing select-none pointer-events-auto"
+      className="flex items-start gap-2 mb-0 group cursor-grab active:cursor-grabbing select-none pointer-events-auto"
     >
       {/* Drag Handle */}
       <div
@@ -120,7 +120,9 @@ export function CodeItem({
       />
 
       {/* Code Content */}
-      <div className="flex-1 px-3 py-2 rounded border border-slate-700 hover:border-slate-600 transition-colors text-xs select-none pointer-events-none">
+      <div className={`flex-1 px-3 py-1 rounded transition-colors text-xs select-none pointer-events-none ${
+        isSorting ? 'border border-slate-500' : 'border border-transparent group-hover:border-slate-600'
+      }`}>
         <SyntaxHighlightedContent content={content} />
       </div>
     </div>
