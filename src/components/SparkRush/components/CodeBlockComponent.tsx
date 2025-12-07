@@ -45,7 +45,7 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
 
   // Find the first non-empty line to get base indentation
   const firstNonEmptyLine = lines.find((l) => l.trim());
-  const baseIndent = firstNonEmptyLine
+  let baseIndent = firstNonEmptyLine
     ? (firstNonEmptyLine.match(/^(\s*)/) || [])[1]?.length || 0
     : 0;
 
@@ -60,85 +60,107 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
   // Calculate padding (2px per space = 0.125rem)
   const paddingRem = baseIndent * 1;
 
+  baseIndent = Math.floor(baseIndent / 2);
+
   return (
-    <pre
-      className="font-mono whitespace-pre-wrap leading-relaxed text-slate-100 text-xl"
-      style={{ paddingLeft: `${paddingRem}rem` }}
-    >
-      {parts.map((part, idx) => {
-        if (!part) return null;
+    <div className="relative w-full flex flex-row items-stretch">
+      {/* {Array.from({ length: baseIndent }).map((_, idx) => {
+        return (
+          <>
+            <div
+              key={idx}
+              className="absolute top-0 bottom-0 w-[1px] bg-gray-600"
+              style={{ left: `${idx * 36 }px`, }} // or rem
+            ></div>
+          </>
+        );
+      })} */}
 
-        // HTML tags
-        if (part.match(/^<[^>]+>$/)) {
-          return (
-            <span key={idx} className="text-blue-300">
-              {part}
-            </span>
-          );
-        }
+      <div style={{ width: `${baseIndent * 36 }px` }}></div>
 
-        // Quoted strings
-        if (part.match(/^["'][^"']*["']$/)) {
-          return (
-            <span key={idx} className="text-yellow-300">
-              {part}
-            </span>
-          );
-        }
+      <pre
+        className="font-mono whitespace-pre-wrap leading-relaxed text-slate-100 text-xl"
+        // style={{ paddingLeft: `${paddingRem}rem` }}
+      >
+        {parts.map((part, idx) => {
+          if (!part) return null;
 
-        // Color codes
-        if (part.match(/^#[0-9a-f]{3,6}$/i)) {
-          return (
-            <span key={idx} className="text-orange-300">
-              {part}
-            </span>
-          );
-        }
-
-        // Delimiters
-        if (part.match(/^[{}:;]$/)) {
-          return (
-            <span key={idx} className="text-purple-300">
-              {part}
-            </span>
-          );
-        }
-
-        // CSS property names and values
-        if (
-          parts[idx - 1] === "{" ||
-          parts[idx + 1] === ":" ||
-          parts[idx - 1] === ";" ||
-          (idx > 0 && parts[idx - 1]?.includes("\n"))
-        ) {
-          const colonIndex = parts.indexOf(":", idx);
-          const semiOrBraceIndex = Math.min(
-            parts.indexOf(";", idx) !== -1 ? parts.indexOf(";", idx) : Infinity,
-            parts.indexOf("}", idx) !== -1 ? parts.indexOf("}", idx) : Infinity
-          );
-
-          if (colonIndex !== -1 && colonIndex < semiOrBraceIndex) {
-            // This is a property name
+          // HTML tags
+          if (part.match(/^<[^>]+>$/)) {
             return (
-              <span key={idx} className="text-green-300">
+              <span key={idx} className="text-blue-300">
                 {part}
               </span>
             );
           }
-        }
 
-        // CSS values (after colon, before semicolon/brace)
-        if (parts[idx - 1] === ":") {
-          return (
-            <span key={idx} className="text-pink-300">
-              {part}
-            </span>
-          );
-        }
+          // Quoted strings
+          if (part.match(/^["'][^"']*["']$/)) {
+            return (
+              <span key={idx} className="text-yellow-300">
+                {part}
+              </span>
+            );
+          }
 
-        // Default text
-        return part;
-      })}
-    </pre>
+          // Color codes
+          if (part.match(/^#[0-9a-f]{3,6}$/i)) {
+            return (
+              <span key={idx} className="text-orange-300">
+                {part}
+              </span>
+            );
+          }
+
+          // Delimiters
+          if (part.match(/^[{}:;]$/)) {
+            return (
+              <span key={idx} className="text-purple-300">
+                {part}
+              </span>
+            );
+          }
+
+          // CSS property names and values
+          if (
+            parts[idx - 1] === "{" ||
+            parts[idx + 1] === ":" ||
+            parts[idx - 1] === ";" ||
+            (idx > 0 && parts[idx - 1]?.includes("\n"))
+          ) {
+            const colonIndex = parts.indexOf(":", idx);
+            const semiOrBraceIndex = Math.min(
+              parts.indexOf(";", idx) !== -1
+                ? parts.indexOf(";", idx)
+                : Infinity,
+              parts.indexOf("}", idx) !== -1
+                ? parts.indexOf("}", idx)
+                : Infinity
+            );
+
+            if (colonIndex !== -1 && colonIndex < semiOrBraceIndex) {
+              // This is a property name
+              return (
+                <span key={idx} className="text-green-300">
+                  {part}
+                </span>
+              );
+            }
+          }
+
+          // CSS values (after colon, before semicolon/brace)
+          if (parts[idx - 1] === ":") {
+            return (
+              <span key={idx} className="text-pink-300">
+                {part}
+              </span>
+            );
+          }
+
+          // Default text
+          return part;
+        })}
+      </pre>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+
 import challenges from "./challenges.json";
 import { Challenge, CodeBlock } from "./types";
 

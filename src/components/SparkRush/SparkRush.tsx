@@ -1,143 +1,116 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CodeSpace } from "./components/CodeSpace";
-import { Challenge, CodeBlock, GameState } from "./types";
-import { checkIsWin, generateHtml, loadRandomChallenge } from "./challenge";
-import { formatTime, shuffleArray } from "./utils";
+import { formatTime } from "./utils";
 import { GameOverModal } from "./components/GameOverModal";
 import { PreviewPane } from "./components/PreviewPane";
+import { SparkRushProvider, useSparkRush } from "./SparkRushContext";
 
-export const SparkRush = () => {
-  const [gameState, setGameState] = useState<GameState>({
-    timeRemaining: 180,
-    score: 0,
-    gameActive: true,
-    gameOver: false,
-  });
-
-  const [challenge, setChallenge] = useState<Challenge>(loadRandomChallenge());
-  const [codeBlocks, setCodeBlocks] = useState<CodeBlock[]>([]);
-
-  const [showSuccessFlash, setShowSuccessFlash] = useState(false);
-  const [showTargetFlash, setShowTargetFlash] = useState(true);
-
-  // initiate code blocks based on target
-  useEffect(() => {
-    // shuffle challenge code blocks and make sure that it is not in win condition
-    let blocks = shuffleArray(challenge.codeBlocks);
-    while (checkIsWin(blocks, challenge.codeBlocks)) {
-      blocks = shuffleArray(challenge.codeBlocks);
-    }
-    setCodeBlocks(blocks);
-  }, [challenge]);
-
-  // Flash ONLY the target when a new challenge loads
-  useEffect(() => {
-    setShowTargetFlash(true);
-    setTimeout(() => {
-      setShowTargetFlash(false);
-    }, 1000);
-  }, [challenge]);
-
-  // Timer
-  useEffect(() => {
-    if (!gameState.gameActive) return;
-
-    const interval = setInterval(() => {
-      setGameState((prev) => {
-        const newTime = prev.timeRemaining - 1;
-        if (newTime <= 0) {
-          return {
-            ...prev,
-            timeRemaining: 0,
-            gameActive: false,
-            gameOver: true,
-          };
-        }
-        return { ...prev, timeRemaining: newTime };
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [gameState.gameActive]);
-
- 
-
-  // Check for win condition
-  useEffect(() => {
-    if (codeBlocks.length === 0) return;
-
-    if (checkIsWin(codeBlocks, challenge.codeBlocks)) {
-      setGameState((prev) => ({ ...prev, score: prev.score + 1 }));
-      setShowSuccessFlash(true); // turn green
-
-      setTimeout(() => {
-        const newChallenge = loadRandomChallenge();
-        while (newChallenge.id === challenge.id) {
-          newChallenge.id = loadRandomChallenge().id;
-        }
-
-        setChallenge(newChallenge);
-        setShowSuccessFlash(false);
-      }, 1000);
-    }
-  }, [codeBlocks]);
-
-  const handleReset = () => {
-    const newChallenge = loadRandomChallenge();
-    setChallenge(newChallenge);
-    setGameState({
-      timeRemaining: 180,
-      score: 0,
-      gameActive: true,
-      gameOver: false,
-    });
-  };
+const SparkRushGame = () => {
+  const { gameState, challenge, showTargetFlash, showSuccessOverlay } =
+    useSparkRush();
 
   return (
-    <>
-      <div className="w-full h-screen bg-slate-950 font-sans overflow-hidden">
-        {gameState.gameOver && (
-          <GameOverModal score={gameState.score} onReset={handleReset} />
-        )}
-
-        <div className="grid grid-cols-2 h-full p-6 gap-6">
-          <div
-            className={`flex flex-col ${
-              showSuccessFlash ? "bg-green-400/20" : "bg-slate-900/40"
-            } w-full p-6  rounded-lg border-slate-800 border `}
-          >
-            <div className="mb-6">
-              <h1 className="text-4xl font-bold text-slate-200 mb-2">
-                Spark Rush
-              </h1>
-              <div className="flex gap-8 items-center">
-                <div
-                  className={`text-xl font-semibold ${
-                    gameState.timeRemaining <= 10
-                      ? "text-orange-400 animate-pulse"
-                      : "text-slate-300"
-                  }`}
-                >
-                  ⏱ {formatTime(gameState.timeRemaining)}
-                </div>
-                <div className="text-xl font-semibold text-slate-300">
-                  ✓ {gameState.score}
-                </div>
-              </div>
-            </div>
-
-            <CodeSpace codeBlocks={codeBlocks} setCodeBlocks={setCodeBlocks} />
-          </div>
-
-          <PreviewPane
-            codeBlocks={codeBlocks}
-            targetHtml={generateHtml(challenge.codeBlocks)}
-            showTargetFlash={showTargetFlash}
-          />
+    <div
+      className={`w-full h-screen   font-sans overflow-hidden flex flex-col transition-all duration-200 ${
+        showSuccessOverlay ? "bg-yellow-100" : "bg-white"
+      }`}
+    >
+      {/* score overlay */}
+      <div
+        className={`absolute inset-0  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 pointer-events-none  ${
+          showSuccessOverlay ? "visible opacity-100" : "invisible opacity-0"
+        } flex flex-col gap-8`}
+      >
+        <div className="text-yellow-300 drop-shadow-sm drop-shadow-black text-9xl font-bold  ">
+          {gameState.score}
+        </div>
+        <div className="text-yellow-300 drop-shadow-sm drop-shadow-black text-3xl font-bold  ">
+          {`Time : ${formatTime(gameState.timeRemaining)}`}
         </div>
       </div>
-    </>
+
+      {/* countdown overlay */}
+      <div
+        className={`absolute inset-0  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 pointer-events-none  ${
+          gameState.timeRemaining <= 5 && !showSuccessOverlay? "visible opacity-100" : "invisible opacity-0"
+        } flex flex-col gap-8`}
+      >
+        <div className="text-yellow-300 drop-shadow-sm drop-shadow-black text-9xl font-bold  ">
+          {gameState.timeRemaining}
+        </div> 
+      </div>
+
+      {gameState.gameOver && <GameOverModal />}
+
+      {/* Header */}
+      <header className="flex items-center justify-between p-4 border-b border-gray-200">
+        <h1 className="text-2xl font-bold">
+          <span style={{ color: "var(--google-blue)" }}>S</span>
+          <span style={{ color: "var(--google-red)" }}>p</span>
+          <span style={{ color: "var(--google-yellow)" }}>a</span>
+          <span style={{ color: "var(--google-green)" }}>r</span>
+          <span style={{ color: "var(--google-blue)" }}>k</span>
+          <span style={{ color: "var(--foreground)" }}> </span>
+          <span style={{ color: "var(--google-red)" }}>R</span>
+          <span style={{ color: "var(--google-yellow)" }}>u</span>
+          <span style={{ color: "var(--google-green)" }}>s</span>
+          <span style={{ color: "var(--google-blue)" }}>h</span>
+        </h1>
+        <div className="flex items-center gap-6">
+          <div
+            className={`text-2xl font-semibold transition-colors flex items-center gap-2 ${
+              gameState.timeRemaining <= 10
+                ? "text-red-500 animate-pulse"
+                : "text-gray-600"
+            }`}
+          >
+            <span className="text-2xl">⏱</span>{" "}
+            {formatTime(gameState.timeRemaining)}
+          </div>
+          <div className="text-2xl font-semibold text-green-500 flex items-center gap-2">
+            <span className="text-2xl">✓</span> {gameState.score}
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 grid grid-cols-2 gap-8 p-8 overflow-hidden">
+        {/* Left Column */}
+        <div className="flex flex-col gap-8">
+          {/* Challenge Info */}
+          <div className="flex-shrink-0 p-6 rounded-xl border-2 border-gray-200 bg-white shadow-sm">
+            <h2
+              className="text-3xl font-bold mb-2"
+              style={{ color: "var(--google-blue)" }}
+            >
+              {challenge.title}
+            </h2>
+            <p className="text-gray-600 text-lg">{challenge.description}</p>
+          </div>
+
+          {/* Code Space */}
+          <div
+            className={`flex-1 flex flex-col transition-all duration-300 rounded-xl border-2 ${"bg-gray-50 border-gray-200"}`}
+          >
+            <CodeSpace />
+          </div>
+        </div>
+
+        {/* Right Column (Preview) */}
+        <div className="flex-1 flex flex-col">
+          <PreviewPane showTargetFlash={showTargetFlash} />
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export const SparkRush = () => {
+  return (
+    <SparkRushProvider>
+      <SparkRushGame />
+    </SparkRushProvider>
   );
 };
