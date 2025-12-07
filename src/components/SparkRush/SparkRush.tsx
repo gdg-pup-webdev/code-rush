@@ -8,7 +8,7 @@ import { formatTime, shuffleArray } from "./utils";
 import { GameOverModal } from "./components/GameOverModal";
 import { PreviewPane } from "./components/PreviewPane";
 
-export const CssRush = () => {
+export const SparkRush = () => {
   const [gameState, setGameState] = useState<GameState>({
     timeRemaining: 180,
     score: 0,
@@ -110,7 +110,7 @@ export const CssRush = () => {
           >
             <div className="mb-6">
               <h1 className="text-4xl font-bold text-slate-200 mb-2">
-                CSS Rush
+                Spark Rush
               </h1>
               <div className="flex gap-8 items-center">
                 <div
