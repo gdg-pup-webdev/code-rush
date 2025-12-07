@@ -3,7 +3,8 @@
     "title": "The Simple Blue Square",
     "description": "Create a basic 'div' element with a solid blue background (#3b82f6) and dimensions of 6rem by 6rem.",
     "codeblocks": [
-      "<div></div>\n",
+      "<div>\n",
+      "</div>\n",
       "<style>\n",
       "  div {\n",
       "    background-color: #3b82f6;\nwidth: 6rem;\nheight: 6rem;\n",
@@ -39,7 +40,8 @@
     "title": "The Pink Circle",
     "description": "Render a perfect circle by styling a 'div' element with a pink background (#ec4899), dimensions of 5rem by 5rem, and a large border radius (9999px).",
     "codeblocks": [
-      "<div></div>\n",
+      "<div>\n",
+      "</div>\n",
       "<style>\n",
       "  div {\n",
       "    background-color: #ec4899;\nwidth: 5rem;\nheight: 5rem;\nborder-radius: 9999px;\n",

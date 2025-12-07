@@ -5,7 +5,7 @@
 export type GameState = {
   timeRemaining: number;
   score: number;
-  gameStarted: boolean;
+  gameActive: boolean;
   gameOver: boolean;
 };
 
