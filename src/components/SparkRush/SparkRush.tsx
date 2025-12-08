@@ -9,6 +9,7 @@ import { SparkRushProvider, useSparkRush } from "./SparkRushContext";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { BouncyShape } from "../ui/BouncyShape";
+import { Home } from "lucide-react";
 
 const SparkRushGame = ({ reset }: { reset: () => void }) => {
   const { gameState, challenge, showTargetFlash, showSuccessOverlay } =
@@ -150,6 +151,11 @@ export const SparkRush = () => {
         className="relative flex flex-col min-h-screen bg-white text-gray-900 overflow-hidden font-sans cursor-pointer"
         onClick={handleOnReady}
       >
+        <Link href="/">
+          <button className="absolute top-4 right-4 z-50 p-3 rounded-full bg-gray-100/50 backdrop-blur-sm hover:bg-gray-200 transition-colors">
+            <Home size={20} className="text-gray-700" />
+          </button>
+        </Link>
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <BouncyShape
             color={colors.blue}
@@ -172,19 +178,22 @@ export const SparkRush = () => {
           />
         </div>
         <div className="flex-grow flex items-center justify-center">
-          <motion.h1
-            className="text-5xl md:text-7xl font-black tracking-tighter text-center"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{
-              delay: 0.2,
-              type: "spring",
-              stiffness: 200,
-              damping: 20,
-            }}
+          <div 
+          className="hover:scale-105 transition-all duration-300"
           >
-            Click Anywhere to Start
-          </motion.h1>
+            <motion.h1
+              className="text-5xl md:text-7xl font-black tracking-tighter text-center"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }} 
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 20,
+              }}
+            >
+              Click Anywhere to Start
+            </motion.h1>
+          </div>
         </div>
       </div>
     );
@@ -199,7 +208,9 @@ export const SparkRush = () => {
     ];
     return (
       <div className="flex items-center justify-center h-screen">
-        <div className={`absolute inset-0 pointer-events-none flex flex-col min-h-screen   text-gray-900 bg-white overflow-hidden font-sans`}>
+        <div
+          className={`absolute inset-0 pointer-events-none flex flex-col min-h-screen   text-gray-900 bg-white overflow-hidden font-sans`}
+        >
           <div className="flex-grow flex items-center justify-center">
             <motion.div
               key={countdown}
