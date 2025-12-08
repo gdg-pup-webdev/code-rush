@@ -14,21 +14,23 @@ export async function POST(req: NextRequest) {
     const ref = doc(db, "leaderboards", "leaderboard");
     const snap = await getDoc(ref);
 
-    let leaderboard: Leaderboard = [];
+    let leaderboard: Leaderboard = {
+      entries: [],
+    };
 
     if (snap.exists()) {
       leaderboard = snap.data() as Leaderboard;
     }
 
     // add new entry to leaderboard
-    leaderboard.push({
+    leaderboard.entries.push({
       ...leaderboardEntryDTO,
       date: Date.now(),
       id: crypto.randomUUID(),
     });
 
     // update leaderboard in firestore
-    await setDoc(ref, { leaderboard });
+    await setDoc(ref, leaderboard);
 
     // return response
     return NextResponse.json(
@@ -36,6 +38,7 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (err: unknown) {
+    console.log(err);
     return NextResponse.json(
       { error: "Failed to create message" },
       { status: 500 }
@@ -49,7 +52,9 @@ export async function GET(req: NextRequest) {
     const ref = doc(db, "leaderboards", "leaderboard");
     const snap = await getDoc(ref);
 
-    let leaderboard: Leaderboard = [];
+    let leaderboard: Leaderboard = {
+      entries: [],
+    };
 
     if (snap.exists()) {
       leaderboard = snap.data() as Leaderboard;
