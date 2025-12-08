@@ -1,44 +1,46 @@
-import { db } from "@/lib/firebase";
+import { adminDb } from "@/lib/firebaseAdmin";
 import {
   CreateLeaderboardEntryDTO,
   Leaderboard,
 } from "@/types/leaderboardTypes";
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
     const leaderboardEntryDTO = (await req.json()) as CreateLeaderboardEntryDTO;
 
-    // get current leaderboard
-    const ref = doc(db, "leaderboards", "leaderboard");
-    const snap = await getDoc(ref);
+    const ref = adminDb.collection("leaderboards").doc("leaderboard");
 
-    let leaderboard: Leaderboard = {
-      entries: [],
-    };
-
-    if (snap.exists()) {
-      leaderboard = snap.data() as Leaderboard;
-    }
-
-    // add new entry to leaderboard
-    leaderboard.entries.push({
+    const newEntry = {
       ...leaderboardEntryDTO,
       date: Date.now(),
       id: crypto.randomUUID(),
+    };
+
+    await ref.update({
+      entries: FieldValue.arrayUnion(newEntry),
     });
 
-    // update leaderboard in firestore
-    await setDoc(ref, leaderboard);
-
-    // return response
     return NextResponse.json(
       { message: "Entry created successfully" },
       { status: 200 }
     );
   } catch (err: unknown) {
     console.log(err);
+    if (err instanceof Error && err.message.includes("NOT_FOUND")) {
+      const ref = adminDb.collection("leaderboards").doc("leaderboard");
+      const newEntry = {
+        ...leaderboardEntryDTO,
+        date: Date.now(),
+        id: crypto.randomUUID(),
+      };
+      await ref.set({ entries: [newEntry] });
+      return NextResponse.json(
+        { message: "Entry created successfully" },
+        { status: 200 }
+      );
+    }
     return NextResponse.json(
       { error: "Failed to create message" },
       { status: 500 }
@@ -49,33 +51,27 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     // get current leaderboard
-    const ref = doc(db, "leaderboards", "leaderboard");
-    const snap = await getDoc(ref);
+    const ref = adminDb.collection("leaderboards").doc("leaderboard");
+    const snap = await ref.get();
 
     let leaderboard: Leaderboard = {
       entries: [],
     };
 
-    if (snap.exists()) {
+    if (snap.exists) {
       leaderboard = snap.data() as Leaderboard;
     } else {
       // create new leaderboard in firestore
-      await setDoc(ref, { leaderboard });
+      await ref.set({ entries: [] });
     }
 
+    const sortedEntries = leaderboard.entries.sort((a, b) => b.score - a.score);
+
     // return response
-    return NextResponse.json(
-      {
-        message: "Success",
-        data: {
-          leaderboard: leaderboard,
-        },
-      },
-      { status: 200 }
-    );
+    return NextResponse.json(sortedEntries, { status: 200 });
   } catch (err: unknown) {
     return NextResponse.json(
-      { error: "Failed to create message" },
+      { error: "Failed to get message" },
       { status: 500 }
     );
   }

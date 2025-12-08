@@ -1,11 +1,11 @@
-export const postLeaderBoardEntry = async (name: string, score: number) => {
+export const postLeaderBoardEntry = async (username: string, score: number) => {
   const res = await fetch("/api/leaderboards", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      name: name,
+      username,
       score: score,
     }),
   });

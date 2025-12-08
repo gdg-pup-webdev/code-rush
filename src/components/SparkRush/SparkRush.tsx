@@ -8,14 +8,14 @@ import { PreviewPane } from "./components/PreviewPane";
 import { SparkRushProvider, useSparkRush } from "./SparkRushContext";
 import Link from "next/link";
 
-const SparkRushGame = () => {
+const SparkRushGame = ({ reset }: { reset: () => void }) => {
   const { gameState, challenge, showTargetFlash, showSuccessOverlay } =
     useSparkRush();
 
   return (
     <div
       className={`w-full h-screen   font-sans overflow-hidden flex flex-col transition-all duration-200 ${
-        showSuccessOverlay ? "bg-yellow-100" : "bg-white"
+        showSuccessOverlay ? "bg-yellow-100" : ""
       }`}
     >
       {/* score overlay */}
@@ -45,7 +45,7 @@ const SparkRushGame = () => {
         </div>
       </div>
 
-      {gameState.gameOver && <GameOverModal />}
+      {gameState.gameOver && <GameOverModal reset={reset} />}
 
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-gray-200">
@@ -111,32 +111,66 @@ const SparkRushGame = () => {
 };
 
 export const SparkRush = () => {
+  const [isReady, setIsReady] = useState(false);
   const [countdown, setCountdown] = useState(3);
 
-  useEffect(() => {
+  const handleOnReady = async () => {
+    console.log("ready");
+    setCountdown(3);
+    setIsReady(true);
+
     const intervalId = setInterval(() => {
       setCountdown((prev) => prev - 1);
+      console.log("countdown", countdown);
     }, 1000);
 
     return () => {
       clearInterval(intervalId);
       setCountdown(3);
     };
-  }, []);
+  };
 
-  if (countdown > 0) {
+  const handleReset = async () => {
+    setIsReady(false);
+    setCountdown(3);
+  };
+
+  if (!isReady)
     return (
       <div className="flex items-center justify-center h-screen">
         {/* countdown overlay */}
         <div
-          className={`absolute inset-0  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 pointer-events-none  ${
-            true
-              ? "visible opacity-100"
-              : "invisible opacity-0"
+          className={`absolute inset-0 bg-amber-200  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 ${
+            true ? "visible opacity-100" : "invisible opacity-0"
+          } flex flex-col gap-8`}
+          onClick={handleOnReady}
+        >
+          <div className="text-white hover:scale-110 transition-all duration-150 cursor-pointer drop-shadow-lg  text-3xl font-bold  ">
+            Click anywhere to start
+          </div>
+        </div>
+      </div>
+    );
+
+  if (countdown >= 0) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        {/* countdown overlay */}
+        <div
+          className={`absolute inset-0 ${
+            countdown=== 0
+              ? "bg-green-400"
+              : countdown === 1
+              ? "bg-amber-300"
+              : countdown === 2
+              ? "bg-orange-400"
+              : "bg-red-600"
+          }  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 pointer-events-none  ${
+            true ? "visible opacity-100" : "invisible opacity-0"
           } flex flex-col gap-8`}
         >
-          <div className="text-yellow-300 drop-shadow-sm drop-shadow-black text-9xl font-bold  ">
-            {countdown}
+          <div className="text-white drop-shadow-sm drop-shadow-black text-9xl font-bold  ">
+            {countdown === 0 ? "GO" : countdown}
           </div>
         </div>
       </div>
@@ -144,8 +178,17 @@ export const SparkRush = () => {
   }
 
   return (
-    <SparkRushProvider>
-      <SparkRushGame />
-    </SparkRushProvider>
+    <div className="flex items-center justify-center h-screen">
+      {/* countdown overlay */}
+      <div
+        className={`absolute z-100 inset-0   bg-opacity-50 flex items-center justify-center  transition-all duration-500 pointer-events-none ${
+          true ? "visible opacity-100" : "invisible opacity-0"
+        } flex flex-col gap-8`}
+      ></div>
+
+      <SparkRushProvider>
+        <SparkRushGame reset={handleReset} />
+      </SparkRushProvider>
+    </div>
   );
 };

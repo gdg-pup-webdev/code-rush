@@ -100,7 +100,7 @@ export default function LandingPage() {
       {/* HEADER */}
       <header className="w-full px-6 md:px-12 py-6 flex justify-between items-center bg-white/60 backdrop-blur-sm sticky top-0 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-full transform hover:rotate-180 transition-transform duration-700">
+          <div className="w-full transform hover:scale-105 transition-transform duration-100">
             <Logo />
           </div>
         </div>
@@ -232,6 +232,7 @@ export default function LandingPage() {
                   Start Challenge
                 </button>
               </Link>
+              <Link href="/leaderboards">
               <button className="group w-full sm:w-auto px-10 py-4 text-xl font-bold rounded-xl bg-white border-2 border-gray-100 text-gray-600 hover:border-gray-300 hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
                 <Trophy
                   size={20}
@@ -239,6 +240,7 @@ export default function LandingPage() {
                 />
                 Leaderboard
               </button>
+              </Link>
             </div>
           </div>
         </section>

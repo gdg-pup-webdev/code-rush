@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 export const CreateLeaderboardEntryDTOSchema = z.object({
-  name: z.string().min(1, "Name cannot be empty"),
+  username: z.string().min(1, "Name cannot be empty"),
   score: z.number().int().positive("Score must be a positive integer"),
 });
 
 export const LeaderBoardEntrySchema = z.object({
-  name: z.string().min(1),
+  username: z.string().min(1),
   score: z.number().int().positive("Score must be a positive integer"),
   id: z.string("ID must be a valid string"),
   date: z

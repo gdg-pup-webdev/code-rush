@@ -7,7 +7,7 @@ export type CreateLeaderboardEntryDTO = z.infer<
   typeof CreateLeaderboardEntryDTOSchema
 >;
 export type LeaderBoardEntry = {
-  name: string;
+  username: string;
   score: number;
   id: string;
   date: number;
