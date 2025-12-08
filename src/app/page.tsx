@@ -1,5 +1,6 @@
 "use client";
 
+import { BouncyShape } from "@/components/ui/BouncyShape";
 import Link from "next/link";
 import { Logo } from "@/components/ui/Logo";
 import { motion } from "framer-motion"; // Import Framer Motion
@@ -11,73 +12,6 @@ import {
   ChevronRight,
   Sparkles,
 } from "lucide-react";
-
-// Reusable Component for the Shapes
-const BouncyShape = ({
-  color,
-  className,
-  delay = 0,
-  initialRotate = 0,
-  type = "square", // 'square' | 'circle'
-}: {
-  color: string;
-  className: string;
-  delay?: number;
-  initialRotate?: number;
-  type?: "square" | "circle";
-}) => {
-  return (
-    <motion.div
-      className={`absolute ${className} cursor-pointer`}
-      // 1. Initial State (Positioning & Base Rotation)
-      initial={{
-        rotate: initialRotate,
-        scale: 1,
-      }}
-      // 2. Interaction State (Hover/Tap) - Managed independently via Spring
-      whileHover={{
-        scale: 1.2,
-        rotate: initialRotate + 15,
-      }}
-      whileTap={{
-        scale: 0.9,
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 15,
-      }}
-    >
-      {/* 3. The "Idle" Animation (Floating/Breathing) - Nested to avoid conflict */}
-      <motion.div
-        className="w-full h-full"
-        animate={{
-          y: [0, -20, 0],
-          rotate: [0, 5, -5, 0], // Relative rotation wobble
-        }}
-        transition={{
-          duration: 5,
-          repeat: Infinity,
-          repeatType: "loop",
-          ease: "easeInOut",
-          delay: delay,
-        }}
-      >
-        {/* Inner Shape to handle Borders vs Backgrounds cleanly */}
-        <div
-          className={`w-full h-full opacity-80 shadow-lg ${
-            type === "circle" ? "rounded-full" : "rounded-2xl"
-          }`}
-          style={
-            type === "circle"
-              ? { border: `12px solid ${color}`, backgroundColor: "transparent" }
-              : { backgroundColor: color }
-          }
-        />
-      </motion.div>
-    </motion.div>
-  );
-};
 
 export default function LandingPage() {
   const colors = {
@@ -100,7 +34,7 @@ export default function LandingPage() {
       {/* HEADER */}
       <header className="w-full px-6 md:px-12 py-6 flex justify-between items-center bg-white/60 backdrop-blur-sm sticky top-0 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-full transform hover:rotate-180 transition-transform duration-700">
+          <div className="w-full transform hover:scale-105 transition-transform duration-100">
             <Logo />
           </div>
         </div>
@@ -232,6 +166,7 @@ export default function LandingPage() {
                   Start Challenge
                 </button>
               </Link>
+              <Link href="/leaderboards">
               <button className="group w-full sm:w-auto px-10 py-4 text-xl font-bold rounded-xl bg-white border-2 border-gray-100 text-gray-600 hover:border-gray-300 hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
                 <Trophy
                   size={20}
@@ -239,6 +174,7 @@ export default function LandingPage() {
                 />
                 Leaderboard
               </button>
+              </Link>
             </div>
           </div>
         </section>
