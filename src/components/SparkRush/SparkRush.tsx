@@ -7,6 +7,8 @@ import { GameOverModal } from "./components/GameOverModal";
 import { PreviewPane } from "./components/PreviewPane";
 import { SparkRushProvider, useSparkRush } from "./SparkRushContext";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { BouncyShape } from "../ui/BouncyShape";
 
 const SparkRushGame = ({ reset }: { reset: () => void }) => {
   const { gameState, challenge, showTargetFlash, showSuccessOverlay } =
@@ -114,20 +116,27 @@ export const SparkRush = () => {
   const [isReady, setIsReady] = useState(false);
   const [countdown, setCountdown] = useState(3);
 
+  const colors = {
+    blue: "#4285F4",
+    red: "#EA4335",
+    yellow: "#FBBC04",
+    green: "#34A853",
+  };
+
   const handleOnReady = async () => {
-    console.log("ready");
     setCountdown(3);
     setIsReady(true);
 
     const intervalId = setInterval(() => {
-      setCountdown((prev) => prev - 1);
-      console.log("countdown", countdown);
+      setCountdown((prev) => {
+        if (prev === 0) {
+          clearInterval(intervalId);
+        }
+        return prev - 1;
+      });
     }, 1000);
 
-    return () => {
-      clearInterval(intervalId);
-      setCountdown(3);
-    };
+    return () => clearInterval(intervalId);
   };
 
   const handleReset = async () => {
@@ -135,42 +144,74 @@ export const SparkRush = () => {
     setCountdown(3);
   };
 
-  if (!isReady)
+  if (!isReady) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        {/* countdown overlay */}
-        <div
-          className={`absolute inset-0 bg-amber-200  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 ${
-            true ? "visible opacity-100" : "invisible opacity-0"
-          } flex flex-col gap-8`}
-          onClick={handleOnReady}
-        >
-          <div className="text-white hover:scale-110 transition-all duration-150 cursor-pointer drop-shadow-lg  text-3xl font-bold  ">
-            Click anywhere to start
-          </div>
+      <div
+        className="relative flex flex-col min-h-screen bg-white text-gray-900 overflow-hidden font-sans cursor-pointer"
+        onClick={handleOnReady}
+      >
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <BouncyShape
+            color={colors.blue}
+            className="top-20 left-[10%] w-24 h-24"
+            initialRotate={12}
+            delay={0}
+          />
+          <BouncyShape
+            type="circle"
+            color={colors.red}
+            className="bottom-40 right-[10%] w-32 h-32"
+            initialRotate={0}
+            delay={2}
+          />
+          <BouncyShape
+            color={colors.yellow}
+            className="top-32 right-[20%] w-16 h-16"
+            initialRotate={45}
+            delay={1.5}
+          />
+        </div>
+        <div className="flex-grow flex items-center justify-center">
+          <motion.h1
+            className="text-5xl md:text-7xl font-black tracking-tighter text-center"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              delay: 0.2,
+              type: "spring",
+              stiffness: 200,
+              damping: 20,
+            }}
+          >
+            Click Anywhere to Start
+          </motion.h1>
         </div>
       </div>
     );
+  }
 
   if (countdown >= 0) {
+    const countdownColors = [
+      colors.green,
+      colors.yellow,
+      colors.red,
+      colors.blue,
+    ];
     return (
       <div className="flex items-center justify-center h-screen">
-        {/* countdown overlay */}
-        <div
-          className={`absolute inset-0 ${
-            countdown=== 0
-              ? "bg-green-400"
-              : countdown === 1
-              ? "bg-amber-300"
-              : countdown === 2
-              ? "bg-orange-400"
-              : "bg-red-600"
-          }  bg-opacity-50 flex items-center justify-center z-50 transition-all duration-500 pointer-events-none  ${
-            true ? "visible opacity-100" : "invisible opacity-0"
-          } flex flex-col gap-8`}
-        >
-          <div className="text-white drop-shadow-sm drop-shadow-black text-9xl font-bold  ">
-            {countdown === 0 ? "GO" : countdown}
+        <div className={`absolute inset-0 pointer-events-none flex flex-col min-h-screen   text-gray-900 bg-white overflow-hidden font-sans`}>
+          <div className="flex-grow flex items-center justify-center">
+            <motion.div
+              key={countdown}
+              initial={{ scale: 0.5, opacity: 0, y: 50 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.8, opacity: 0, y: -50 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="text-9xl md:text-[200px] font-black tracking-tighter"
+              style={{ color: countdownColors[countdown] || colors.blue }}
+            >
+              {countdown === 0 ? "GO!" : countdown}
+            </motion.div>
           </div>
         </div>
       </div>
@@ -179,12 +220,16 @@ export const SparkRush = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      {/* countdown overlay */}
-      <div
-        className={`absolute z-100 inset-0   bg-opacity-50 flex items-center justify-center  transition-all duration-500 pointer-events-none ${
-          true ? "visible opacity-100" : "invisible opacity-0"
-        } flex flex-col gap-8`}
-      ></div>
+      <div className="absolute inset-0 z-100 opacity-0 transition-all duration-700 pointer-events-none flex flex-col min-h-screen bg-white  text-gray-900 overflow-hidden font-sans">
+        <div className="flex-grow flex items-center justify-center">
+          <div
+            className="text-9xl md:text-[200px] font-black tracking-tighter"
+            style={{ color: colors.green }}
+          >
+            GO!
+          </div>
+        </div>
+      </div>
 
       <SparkRushProvider>
         <SparkRushGame reset={handleReset} />
