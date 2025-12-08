@@ -1,81 +1,342 @@
 "use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { Logo } from '@/components/ui/Logo';
+import Link from "next/link";
+import { Logo } from "@/components/ui/Logo";
+import { motion } from "framer-motion"; // Import Framer Motion
+import {
+  Code2,
+  MonitorPlay,
+  Trophy,
+  Timer,
+  ChevronRight,
+  Sparkles,
+} from "lucide-react";
+
+// Reusable Component for the Shapes
+const BouncyShape = ({
+  color,
+  className,
+  delay = 0,
+  initialRotate = 0,
+  type = "square", // 'square' | 'circle'
+}: {
+  color: string;
+  className: string;
+  delay?: number;
+  initialRotate?: number;
+  type?: "square" | "circle";
+}) => {
+  return (
+    <motion.div
+      className={`absolute ${className} cursor-pointer`}
+      // 1. Initial State (Positioning & Base Rotation)
+      initial={{
+        rotate: initialRotate,
+        scale: 1,
+      }}
+      // 2. Interaction State (Hover/Tap) - Managed independently via Spring
+      whileHover={{
+        scale: 1.2,
+        rotate: initialRotate + 15,
+      }}
+      whileTap={{
+        scale: 0.9,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 300,
+        damping: 15,
+      }}
+    >
+      {/* 3. The "Idle" Animation (Floating/Breathing) - Nested to avoid conflict */}
+      <motion.div
+        className="w-full h-full"
+        animate={{
+          y: [0, -20, 0],
+          rotate: [0, 5, -5, 0], // Relative rotation wobble
+        }}
+        transition={{
+          duration: 5,
+          repeat: Infinity,
+          repeatType: "loop",
+          ease: "easeInOut",
+          delay: delay,
+        }}
+      >
+        {/* Inner Shape to handle Borders vs Backgrounds cleanly */}
+        <div
+          className={`w-full h-full opacity-80 shadow-lg ${
+            type === "circle" ? "rounded-full" : "rounded-2xl"
+          }`}
+          style={
+            type === "circle"
+              ? { border: `12px solid ${color}`, backgroundColor: "transparent" }
+              : { backgroundColor: color }
+          }
+        />
+      </motion.div>
+    </motion.div>
+  );
+};
 
 export default function LandingPage() {
+  const colors = {
+    blue: "#4285F4",
+    red: "#EA4335",
+    yellow: "#FBBC04",
+    green: "#34A853",
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-white text-gray-800">
-      <header className="w-full px-8 py-4 flex justify-between items-center">
-        <Logo/>
+    <div className="relative flex flex-col min-h-screen bg-white text-gray-900 overflow-x-hidden font-sans">
+      {/* === BACKGROUND DECORATION === */}
+      <div className="gdg-decor-bg" aria-hidden="true">
+        <span className="bracket text-gray-900" style={{ marginRight: "2rem" }}>
+          &lt;
+        </span>
+        <span className="bracket text-gray-900">&gt;</span>
+      </div>
+
+      {/* HEADER */}
+      <header className="w-full px-6 md:px-12 py-6 flex justify-between items-center bg-white/60 backdrop-blur-sm sticky top-0 z-50">
+        <div className="flex items-center gap-3">
+          <div className="w-full transform hover:rotate-180 transition-transform duration-700">
+            <Logo />
+          </div>
+        </div>
         <nav>
           <Link href="/spark-rush">
-            <p className="px-6 py-3 text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-transform"
-               style={{ backgroundColor: 'var(--google-blue)' }}>
-              Start Now
-            </p>
+            <button
+              className="group px-6 py-2.5 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg hover:shadow-blue-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+              style={{ backgroundColor: colors.blue }}
+            >
+              Enter Arena
+              <ChevronRight
+                size={16}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </button>
           </Link>
         </nav>
       </header>
 
-      <main className="flex-grow flex flex-col items-center justify-center text-center px-4">
-        <div className="relative w-full max-w-4xl flex flex-col items-center">
-          <div className="absolute -top-20 -left-20 w-48 h-48 bg-yellow-200 rounded-full opacity-50 animate-blob"></div>
-          <div className="absolute -top-10 -right-20 w-48 h-48 bg-red-200 rounded-full opacity-50 animate-blob animation-delay-2000"></div>
-          <div className="absolute top-40 -left-32 w-48 h-48 bg-blue-200 rounded-full opacity-50 animate-blob animation-delay-4000"></div>
-          <div className="absolute top-20 -right-32 w-48 h-48 bg-green-200 rounded-full opacity-50 animate-blob animation-delay-6000"></div>
+      {/* MAIN CONTENT */}
+      <main className="flex-grow flex flex-col">
+        {/* HERO SECTION */}
+        <section className="relative w-full pt-20 pb-32 px-4 flex flex-col items-center justify-center min-h-[80vh]">
+          
+          {/* === FRAMER MOTION GEOMETRIC SHAPES === */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Blue Square - Top Left */}
+            <BouncyShape
+              color={colors.blue}
+              className="top-20 left-[10%] w-24 h-24 pointer-events-auto"
+              initialRotate={12}
+              delay={0}
+            />
 
-          <h2 className="text-5xl md:text-7xl font-extrabold mb-4 relative z-10">
-            The Ultimate CSS Challenge
-          </h2>
-          <p className="text-lg md:text-2xl text-gray-600 mb-10 relative z-10 max-w-2xl">
-            Test your CSS skills in a fun, fast-paced environment. Are you ready to rush?
-          </p>
-          <Link href="/spark-rush">
-            <p className="px-10 py-5 text-xl text-white font-bold rounded-full shadow-2xl transform hover:scale-110 transition-transform"
-               style={{ backgroundColor: 'var(--google-green)' }}>
-              I'm Ready!
+            {/* Red Circle - Bottom Right */}
+            <BouncyShape
+              type="circle"
+              color={colors.red}
+              className="bottom-40 right-[10%] w-32 h-32 pointer-events-auto"
+              initialRotate={0}
+              delay={2}
+            />
+
+            {/* Yellow Square - Top Right */}
+            <BouncyShape
+              color={colors.yellow}
+              className="top-32 right-[20%] w-16 h-16 pointer-events-auto"
+              initialRotate={45}
+              delay={1.5}
+            />
+
+            {/* Green Pill - Bottom Left */}
+            {/* Custom logic for Pill shape since it's not a square/circle */}
+            <motion.div
+              className="absolute bottom-20 left-[15%] w-40 h-12 pointer-events-auto cursor-pointer"
+              initial={{ rotate: -12, scale: 1 }}
+              whileHover={{
+                scale: 1.1,
+                rotate: -5,
+              }}
+              whileTap={{ scale: 0.95 }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 15,
+              }}
+            >
+              <motion.div
+                className="w-full h-full"
+                animate={{
+                  y: [0, -15, 0],
+                  rotate: [0, 4, -8, 0], // Relative wobble
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.5,
+                }}
+              >
+                <div
+                  className="w-full h-full rounded-full opacity-80 shadow-lg"
+                  style={{ backgroundColor: colors.green }}
+                />
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Hero Content */}
+          <div className="relative z-10 text-center max-w-5xl mx-auto space-y-8">
+            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-blue-50 text-blue-700 text-sm font-bold tracking-wide animate-fade-in-up border border-blue-100">
+              <Sparkles size={16} fill="currentColor" />
+              <span>GDG PUP</span>
+            </div>
+
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] text-gray-900">
+              CODE.
+              <br />
+              <span className="relative inline-block">
+                CREATE.
+                <svg
+                  className="absolute w-full h-3 -bottom-1 left-0 text-red-500"
+                  viewBox="0 0 100 10"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    d="M0 5 Q 50 10 100 5"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    fill="none"
+                  />
+                </svg>
+              </span>
+              <br />
+              <span style={{ color: colors.blue }}>CONQUER.</span>
+            </h1>
+
+            <p className="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
+              The ultimate campus CSS showdown. Arrange the blocks, match the
+              design, and race against the clock.
             </p>
-          </Link>
-        </div>
 
-        <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-3 gap-12 mt-24 text-left">
-          <div className="flex flex-col items-center text-center p-6 bg-gray-50 rounded-lg">
-            <Image src="/file.svg" alt="Code" width={64} height={64} className="mb-4" />
-            <h3 className="text-2xl font-bold mb-2" style={{color: 'var(--google-blue)'}}>Write the Code</h3>
-            <p>Arrange the code blocks to match the target design.</p>
+            <div className="flex flex-col sm:flex-row gap-5 justify-center pt-8">
+              <Link href="/spark-rush">
+                <button
+                  className="w-full sm:w-auto px-10 py-4 text-xl font-bold rounded-xl shadow-xl shadow-blue-200 hover:shadow-2xl hover:shadow-blue-300 transform hover:scale-105 transition-all text-white"
+                  style={{ backgroundColor: colors.blue }}
+                >
+                  Start Challenge
+                </button>
+              </Link>
+              <button className="group w-full sm:w-auto px-10 py-4 text-xl font-bold rounded-xl bg-white border-2 border-gray-100 text-gray-600 hover:border-gray-300 hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                <Trophy
+                  size={20}
+                  className="text-yellow-500 group-hover:scale-110 transition-transform"
+                />
+                Leaderboard
+              </button>
+            </div>
           </div>
-          <div className="flex flex-col items-center text-center p-6 bg-gray-50 rounded-lg">
-            <Image src="/window.svg" alt="Preview" width={64} height={64} className="mb-4" />
-            <h3 className="text-2xl font-bold mb-2" style={{color: 'var(--google-red)'}}>See the Result</h3>
-            <p>Get instant feedback on your code in the preview pane.</p>
+        </section>
+
+        {/* FEATURES GRID */}
+        <section className="w-full max-w-7xl mx-auto px-4 pb-24">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 bg-white rounded-3xl border border-gray-100 shadow-lg shadow-gray-200/40 hover:-translate-y-2 transition-transform duration-300">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-white shadow-md"
+                style={{ backgroundColor: colors.blue }}
+              >
+                <Code2 size={28} />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-800">
+                Write Logic
+              </h3>
+              <p className="text-gray-500">
+                Drag code blocks and arrange CSS properties to build the layout.
+              </p>
+            </div>
+
+            <div className="p-8 bg-white rounded-3xl border border-gray-100 shadow-lg shadow-gray-200/40 hover:-translate-y-2 transition-transform duration-300">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-white shadow-md"
+                style={{ backgroundColor: colors.red }}
+              >
+                <MonitorPlay size={28} />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-800">
+                See Results
+              </h3>
+              <p className="text-gray-500">
+                Instant preview pane updates in real-time as you code.
+              </p>
+            </div>
+
+            <div className="p-8 bg-white rounded-3xl border border-gray-100 shadow-lg shadow-gray-200/40 hover:-translate-y-2 transition-transform duration-300">
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 text-white shadow-md"
+                style={{ backgroundColor: colors.yellow }}
+              >
+                <Timer size={28} />
+              </div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-800">
+                Speed Run
+              </h3>
+              <p className="text-gray-500">
+                Submit fast. Points are awarded for both accuracy and speed.
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col items-center text-center p-6 bg-gray-50 rounded-lg">
-            <Image src="/globe.svg" alt="Compete" width={64} height={64} className="mb-4" />
-            <h3 className="text-2xl font-bold mb-2" style={{color: 'var(--google-yellow)'}}>Beat the Clock</h3>
-            <p>Score points and race against the timer to win.</p>
-          </div>
-        </div>
+        </section>
       </main>
 
-      <footer className="w-full py-6 text-center text-gray-600">
-        <p>Made with ❤️ by GDG for our campus booth</p>
+      <footer className="w-full py-8 text-center border-t border-gray-100 bg-white relative z-10">
+        <p className="text-gray-500 font-medium">
+          Made with <span className="text-red-500">❤</span> by GDG On Campus
+        </p>
       </footer>
 
       <style jsx global>{`
-        @keyframes blob {
-          0% { transform: translate(0px, 0px) scale(1); }
-          33% { transform: translate(30px, -50px) scale(1.1); }
-          66% { transform: translate(-20px, 20px) scale(0.9); }
-          100% { transform: translate(0px, 0px) scale(1); }
+        .gdg-decor-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          opacity: 0.03;
+          font-weight: 900;
+          font-size: 40vw;
+          user-select: none;
         }
-        .animate-blob {
-          animation: blob 7s infinite;
+
+        .gdg-decor-bg .bracket {
+          transform: scaleY(0.9);
+          font-family: sans-serif;
+          letter-spacing: -2vw;
         }
-        .animation-delay-2000 { animation-delay: 2s; }
-        .animation-delay-4000 { animation-delay: 4s; }
-        .animation-delay-6000 { animation-delay: 6s; }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in-up {
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
       `}</style>
     </div>
   );
