@@ -34,14 +34,14 @@ export default function LandingPage() {
       {/* HEADER */}
       <header className="w-full px-6 md:px-12 py-6 flex justify-between items-center bg-white/60 backdrop-blur-sm sticky top-0 z-50">
         <div className="flex items-center gap-3">
-          <div className="w-full transform hover:scale-105 transition-transform duration-100">
+          <Link href="/" className="w-full transform hover:scale-105 transition-transform duration-100 cursor-pointer">
             <Logo />
-          </div>
+          </Link>
         </div>
         <nav>
           <Link href="/spark-rush">
             <button
-              className="group px-6 py-2.5 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg hover:shadow-blue-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+              className="group px-6 py-2.5 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg hover:shadow-blue-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
               style={{ backgroundColor: colors.blue }}
             >
               Enter Arena
@@ -139,6 +139,7 @@ export default function LandingPage() {
                   className="absolute w-full h-3 -bottom-1 left-0 text-red-500"
                   viewBox="0 0 100 10"
                   preserveAspectRatio="none"
+                  aria-hidden="true"
                 >
                   <path
                     d="M0 5 Q 50 10 100 5"

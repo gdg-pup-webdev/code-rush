@@ -76,7 +76,7 @@ Once the server is running:
 
 ## 🆘 Support
 
-If you encounter any issues or have questions, please [open an issue](https://github.com/gdg-pup/code-rush/issues) on GitHub.
+If you encounter any issues or have questions, please [open an issue](https://github.com/gdg-pup-webdev/code-rush/issues) on GitHub.
 
 ## 👥 Maintainers
 
