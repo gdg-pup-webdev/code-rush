@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Code Rush
 
-## Getting Started
+> **Code. Create. Conquer.**
+> The ultimate campus CSS showdown by GDG On Campus PUP.
 
-First, run the development server:
+Code Rush is an interactive, competitive coding platform designed to test and sharpen CSS skills. Participants race against the clock to arrange code blocks, match designs, and build layouts using modern CSS techniques. It combines the thrill of a speed run with the intricacies of web design.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-   **Interactive Challenges**: Drag, drop, and configure CSS properties to solve layout puzzles.
+-   **Real-time Preview**: Visualize your code's output instantly as you build.
+-   **Speed Runs**: Compete for the fastest completion times and climb the leaderboards.
+-   **Dynamic Visuals**: A polished, responsive interface featuring layout animations and bouncy geometric elements.
+-   **Live Leaderboards**: Track rankings and scores in real-time.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Built with modern web technologies for performance and developer experience:
 
-## Learn More
+-   **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+-   **Language**: [TypeScript](https://www.typescriptlang.org/)
+-   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+-   **Animations**: [Framer Motion](https://www.framer.com/motion/)
+-   **Interactivity**: [dnd-kit](https://dndkit.com/) for drag-and-drop mechanics
+-   **Backend**: [Firebase](https://firebase.google.com/)
 
-To learn more about Next.js, take a look at the following resources:
+## 🏁 Getting Started
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Follow these instructions to set up the project locally for development and testing.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
 
-## Deploy on Vercel
+Ensure you have the following installed:
+-   [Node.js](https://nodejs.org/) (v18 or higher recommended)
+-   npm, yarn, pnpm, or bun
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/gdg-pup-webdev/code-rush.git
+    cd code-rush
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    # or
+    yarn install
+    # or
+    pnpm install
+    ```
+
+3.  **Environment Setup**
+    This project uses Firebase. You will need to create a `.env` file in the root directory with your Firebase configuration keys.
+    ```env
+    NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+    # Add other necessary variables
+    ```
+
+4.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
+
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 🧪 Usage
+
+Once the server is running:
+-   Navigate to the **Landing Page** to start.
+-   Click **"Enter Arena"** or **"Start Challenge"** to begin the *Spark Rush* game mode.
+-   Use the **Leaderboard** button to view current standings.
+
+## 🆘 Support
+
+If you encounter any issues or have questions, please [open an issue](https://github.com/gdg-pup-webdev/code-rush/issues) on GitHub.
+
+## 👥 Maintainers
+
+-   **GDG On Campus PUP** - *Core Team*
+
+## 📄 License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.

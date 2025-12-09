@@ -1,35 +1,15 @@
 "use client";
 
+import { Leaderboards } from "@/components/Leaderboards";
 import { BouncyShape } from "@/components/ui/BouncyShape";
 import { Logo } from "@/components/ui/Logo";
-import { db } from "@/lib/firebase";
-import { getLeaderboards, postLeaderBoardEntry } from "@/lib/leaderboards";
-import { LeaderBoardEntry } from "@/types/leaderboardTypes";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { colors } from "@/constants/colors";
 import { motion } from "framer-motion";
-import { ChevronLeft, Crown, Send, Sparkles, Trophy } from "lucide-react";
+import { ChevronRight, Trophy } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-
-const colors = {
-  blue: "#4285F4",
-  red: "#EA4335",
-  yellow: "#FBBC04",
-  green: "#34A853",
-};
+ 
 
 export const LeaderboardsPage = () => {
-  const [leaderboards, setLeaderboards] = useState<LeaderBoardEntry[]>([]);
-
-  const handleOnGetLeaderboards = async () => {
-    const res = await getLeaderboards();
-    setLeaderboards(res);
-  };
-
-  useEffect(() => {
-    handleOnGetLeaderboards();
-  }, []);
-
   return (
     <div className="relative flex flex-col min-h-screen bg-white text-gray-900 overflow-x-hidden font-sans">
       <div className="gdg-decor-bg" aria-hidden="true">
@@ -51,14 +31,14 @@ export const LeaderboardsPage = () => {
         <nav>
           <Link href="/spark-rush">
             <button
-              className="group px-6 py-2.5 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg hover:shadow-blue-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+              className="group px-6 py-2.5 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg hover:shadow-blue-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer "
               style={{ backgroundColor: colors.blue }}
             >
-              <ChevronLeft
+              Enter Arena
+              <ChevronRight
                 size={16}
-                className="group-hover:-translate-x-1 transition-transform"
+                className="group-hover:translate-x-1 transition-transform"
               />
-              Back to Arena
             </button>
           </Link>
         </nav>
@@ -133,69 +113,7 @@ export const LeaderboardsPage = () => {
               HALL OF FAME
             </h1>
 
-            <div className="w-full max-w-2xl mx-auto bg-white/50 backdrop-blur-sm rounded-3xl shadow-lg p-8 border border-gray-100">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Top Players</h2>
-                <Sparkles size={24} className="text-yellow-500" />
-              </div>
-
-              <div className="space-y-4">
-                {leaderboards.map((entry, index) => {
-                  const rank = index + 1;
-                  let rankColor = "text-gray-400";
-                  if (rank === 1) rankColor = "text-yellow-400";
-                  if (rank === 2) rankColor = "text-gray-300";
-                  if (rank === 3) rankColor = "text-yellow-600";
-
-                  return (
-                    <div
-                      key={entry.id}
-                      className="flex items-center justify-between p-4 rounded-xl bg-white shadow-md transition-transform hover:scale-105 border-l-8"
-                      style={{
-                        borderColor:
-                          rank === 1
-                            ? colors.yellow
-                            : rank === 2
-                            ? colors.red
-                            : rank === 3
-                            ? colors.blue
-                            : "transparent",
-                      }}
-                    >
-                      <div className="flex items-center gap-4">
-                        <span
-                          className={`text-3xl font-bold w-10 ${rankColor}`}
-                        >
-                          {rank}
-                        </span>
-                        <div className="flex flex-col items-start">
-                          <span className="text-xl font-semibold text-gray-800">
-                            {entry.username?.trim()}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            {new Date(entry.date).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span
-                          className="text-2xl font-bold"
-                          style={{ color: colors.blue }}
-                        >
-                          {entry.score}
-                        </span>
-                        {rank === 1 && (
-                          <Crown
-                            size={24}
-                            className="text-yellow-400 -rotate-12"
-                          />
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <Leaderboards />
           </div>
         </section>
       </main>
@@ -247,6 +165,5 @@ export const LeaderboardsPage = () => {
     </div>
   );
 };
-
 
 export default LeaderboardsPage;
