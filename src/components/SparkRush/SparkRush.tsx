@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { BouncyShape } from "../ui/BouncyShape";
 import { Home } from "lucide-react";
 import { Logo } from "../ui/Logo";
+import { colors } from "@/constants/colors";
 
 const SparkRushGame = ({ reset }: { reset: () => void }) => {
   const { gameState, challenge, showTargetFlash, showSuccessOverlay } =
@@ -53,7 +54,7 @@ const SparkRushGame = ({ reset }: { reset: () => void }) => {
 
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-gray-200">
-        <Logo/>
+        <Logo />
         <div className="flex items-center gap-6">
           <div
             className={`text-2xl font-semibold transition-colors flex items-center gap-2 ${
@@ -103,7 +104,7 @@ const SparkRushGame = ({ reset }: { reset: () => void }) => {
   );
 };
 
-export const SparkRush = () => {
+const SparkRushContainer = () => {
   const [isReady, setIsReady] = useState(false);
   const [countdown, setCountdown] = useState(3);
 
@@ -168,13 +169,11 @@ export const SparkRush = () => {
           />
         </div>
         <div className="flex-grow flex items-center justify-center">
-          <div 
-          className="hover:scale-105 transition-all duration-300"
-          >
+          <div className="hover:scale-105 transition-all duration-300">
             <motion.h1
               className="text-5xl md:text-7xl font-black tracking-tighter text-center"
               initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }} 
+              animate={{ scale: 1, opacity: 1 }}
               transition={{
                 type: "spring",
                 stiffness: 200,
@@ -236,5 +235,59 @@ export const SparkRush = () => {
         <SparkRushGame reset={handleReset} />
       </SparkRushProvider>
     </div>
+  );
+};
+
+export const SparkRush = () => {
+  return (
+    <>
+      <div className="relative flex flex-col min-h-screen bg-white text-gray-900 overflow-hidden font-sans cursor-pointer xl:hidden">
+        <Link href="/">
+          <button className="absolute top-4 right-4 z-50 p-3 rounded-full bg-gray-100/50 backdrop-blur-sm hover:bg-gray-200 transition-colors">
+            <Home size={20} className="text-gray-700" />
+          </button>
+        </Link>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <BouncyShape
+            color={colors.blue}
+            className="top-20 left-[10%] w-24 h-24"
+            initialRotate={12}
+            delay={0}
+          />
+          <BouncyShape
+            type="circle"
+            color={colors.red}
+            className="bottom-40 right-[10%] w-32 h-32"
+            initialRotate={0}
+            delay={2}
+          />
+          <BouncyShape
+            color={colors.yellow}
+            className="top-32 right-[20%] w-16 h-16"
+            initialRotate={45}
+            delay={1.5}
+          />
+        </div>
+        <div className="flex-grow flex items-center justify-center">
+          <div className="hover:scale-105 transition-all duration-300">
+            <motion.h1
+              className="text-5xl md:text-7xl font-black tracking-tighter text-center"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 20,
+              }}
+            >
+              Code Rush only works on desktop.
+            </motion.h1>
+          </div>
+        </div>
+      </div>
+      <div className="w-full h-full hidden xl:block">
+        <SparkRushContainer />
+      </div>
+    </>
   );
 };
