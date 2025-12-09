@@ -160,19 +160,19 @@ export default function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-5 justify-center pt-8">
               <Link href="/spark-rush">
                 <button
-                  className="w-full sm:w-auto px-10 py-4 text-xl font-bold rounded-xl shadow-xl shadow-blue-200 hover:shadow-2xl hover:shadow-blue-300 transform hover:scale-105 transition-all text-white"
+                  className="w-full sm:w-auto px-10 py-4 text-xl font-bold rounded-xl shadow-xl shadow-blue-200 hover:shadow-2xl hover:shadow-blue-300 transform hover:scale-105 transition-all text-white cursor-pointer"
                   style={{ backgroundColor: colors.blue }}
                 >
                   Start Challenge
                 </button>
               </Link>
               <Link href="/leaderboards">
-              <button className="group w-full sm:w-auto px-10 py-4 text-xl font-bold rounded-xl bg-white border-2 border-gray-100 text-gray-600 hover:border-gray-300 hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+              <button className="group w-full sm:w-auto px-10 py-4 text-xl font-bold rounded-xl bg-white border-2 border-gray-100 text-gray-600 hover:border-gray-300 hover:bg-gray-50 transition-all flex items-center justify-center gap-2 cursor-pointer">
                 <Trophy
                   size={20}
                   className="text-yellow-500 group-hover:scale-110 transition-transform"
                 />
-                Leaderboard
+                Leaderboards
               </button>
               </Link>
             </div>

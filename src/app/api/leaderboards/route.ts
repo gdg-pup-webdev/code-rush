@@ -51,7 +51,9 @@ export async function GET(req: NextRequest) {
       await ref.set({ entries: [] });
     }
 
-    const sortedEntries = leaderboard.entries.sort((a, b) => b.score - a.score);
+    const sortedEntries = leaderboard.entries.sort(
+      (a, b) => b.score - a.score || a.date - b.date
+    );
 
     // return response
     return NextResponse.json(sortedEntries, { status: 200 });
