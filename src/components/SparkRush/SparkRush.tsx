@@ -268,10 +268,10 @@ export const SparkRush = () => {
             delay={1.5}
           />
         </div>
-        <div className="flex-grow flex items-center justify-center">
-          <div className="hover:scale-105 transition-all duration-300">
+        <div className="flex-grow flex flex-col items-center justify-center">
+          <div className="hover:scale-105 transition-all duration-300 text-center">
             <motion.h1
-              className="text-5xl md:text-7xl font-black tracking-tighter text-center"
+              className="text-5xl md:text-7xl font-black tracking-tighter"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{
@@ -282,6 +282,11 @@ export const SparkRush = () => {
             >
               Code Rush only works on desktop.
             </motion.h1>
+            <Link href="/" className="mt-8 inline-block">
+              <button className="px-8 py-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                Go back to Home
+              </button>
+            </Link>
           </div>
         </div>
       </div>
