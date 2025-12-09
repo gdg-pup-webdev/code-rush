@@ -7,7 +7,7 @@ import { getLeaderboards, postLeaderBoardEntry } from "@/lib/leaderboards";
 import { LeaderBoardEntry } from "@/types/leaderboardTypes";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { motion } from "framer-motion";
-import { ChevronLeft, Crown, Send, Sparkles, Trophy } from "lucide-react";
+import { ChevronLeft, ChevronRight, Crown, Send, Sparkles, Trophy } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -54,11 +54,11 @@ export const LeaderboardsPage = () => {
               className="group px-6 py-2.5 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg hover:shadow-blue-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
               style={{ backgroundColor: colors.blue }}
             >
-              <ChevronLeft
+              Enter Arena
+              <ChevronRight
                 size={16}
-                className="group-hover:-translate-x-1 transition-transform"
+                className="group-hover:translate-x-1 transition-transform"
               />
-              Back to Arena
             </button>
           </Link>
         </nav>

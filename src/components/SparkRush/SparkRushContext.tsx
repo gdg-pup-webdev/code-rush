@@ -42,7 +42,7 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({
   children,
 }) => {
 
-  const timeRemaining = 90;
+  const timeRemaining = 10;
   const [gameState, setGameState] = useState<GameState>({
     timeRemaining: timeRemaining,
     score: 0,

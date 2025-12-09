@@ -2,20 +2,42 @@ import React, { useState } from "react";
 import { useSparkRush } from "../SparkRushContext";
 import { postLeaderBoardEntry } from "@/lib/leaderboards";
 import Link from "next/link";
-import { Send } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function GameOverModal({ reset }: { reset: () => void }) {
-  const { gameState, resetGame } = useSparkRush();
+  const { gameState } = useSparkRush();
   const { score } = gameState;
   const [username, setUsername] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const router = useRouter();
 
-  const handleOnCreateEntry = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSaveScore = async () => {
     if (username && score > 0) {
-      await postLeaderBoardEntry(username, score);
-      setSubmitted(true);
+      setIsSaving(true);
+      try {
+        const savePromise = postLeaderBoardEntry(username, score);
+        const timerPromise = new Promise((resolve) => setTimeout(resolve, 1000));
+        await Promise.all([savePromise, timerPromise]);
+      } catch (error) {
+        console.error("Failed to save score:", error);
+        // Optionally, show an error message to the user
+      } finally {
+        setIsSaving(false);
+      }
     }
+  };
+
+  const handlePlayAgain = async () => {
+    if (isSaving) return;
+    await handleSaveScore();
+    reset();
+  };
+
+  const handleViewLeaderboards = async (e: React.MouseEvent) => {
+    if (isSaving) return;
+    e.preventDefault();
+    await handleSaveScore();
+    router.push("/leaderboards");
   };
 
   return (
@@ -50,53 +72,39 @@ export function GameOverModal({ reset }: { reset: () => void }) {
           <p className="text-2xl text-gray-700">Challenges Completed</p>
         </div>
 
-        {!submitted ? (
-          <form onSubmit={handleOnCreateEntry} className="mt-8">
-            <h3 className="text-lg font-semibold text-gray-700 mb-4">
-              Add Your Score to the Leaderboard!
-            </h3>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input
-                type="text"
-                placeholder="Enter your username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-              <button
-                type="submit"
-                className="px-6 py-2 text-white font-semibold rounded-lg shadow-md hover:shadow-lg flex items-center justify-center gap-2 transition-all"
-                style={{ backgroundColor: "var(--google-green)" }}
-                disabled={!username}
-              >
-                <Send size={16} />
-                Submit
-              </button>
-            </div>
-          </form>
-        ) : (
-          <div className="text-center">
-            <p className="text-lg text-green-600 font-semibold">
-              Your score has been submitted!
-            </p>
-            <Link href="/leaderboards">
-              <span className="text-blue-500 hover:underline cursor-pointer">
-                View Leaderboards
-              </span>
-            </Link>
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold text-gray-700 mb-4">
+            Enter your name to save your score!
+          </h3>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              disabled={isSaving}
+            />
           </div>
-        )}
+        </div>
 
         <button
-          onClick={() => {
-            // resetGame();
-            reset();
-          }}
-          className="w-full mt-4 px-6 py-4 text-xl text-white font-bold rounded-lg transition-transform transform hover:scale-105"
+          onClick={handlePlayAgain}
+          className="w-full mt-4 px-6 py-4 text-xl text-white font-bold rounded-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ backgroundColor: "var(--google-blue)" }}
+          disabled={isSaving}
         >
-          Play Again
+          {isSaving ? "Saving..." : "Play Again"}
         </button>
+        <Link
+          href="/leaderboards"
+          onClick={handleViewLeaderboards}
+          className={`mt-4 text-blue-500 hover:underline ${
+            isSaving ? "pointer-events-none opacity-50" : ""
+          }`}
+        >
+          View Leaderboards
+        </Link>
       </div>
     </div>
   );
