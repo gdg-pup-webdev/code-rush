@@ -27,20 +27,6 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (err: unknown) {
-    console.log(err);
-    if (err instanceof Error && err.message.includes("NOT_FOUND")) {
-      const ref = adminDb.collection("leaderboards").doc("leaderboard");
-      const newEntry = {
-        ...leaderboardEntryDTO,
-        date: Date.now(),
-        id: crypto.randomUUID(),
-      };
-      await ref.set({ entries: [newEntry] });
-      return NextResponse.json(
-        { message: "Entry created successfully" },
-        { status: 200 }
-      );
-    }
     return NextResponse.json(
       { error: "Failed to create message" },
       { status: 500 }
