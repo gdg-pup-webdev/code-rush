@@ -173,7 +173,7 @@ export default function LandingPage() {
                   size={20}
                   className="text-yellow-500 group-hover:scale-110 transition-transform"
                 />
-                Leaderboard
+                Leaderboards
               </button>
               </Link>
             </div>
