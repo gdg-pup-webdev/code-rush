@@ -3,16 +3,11 @@
 import { Leaderboards } from "@/components/Leaderboards";
 import { BouncyShape } from "@/components/ui/BouncyShape";
 import { Logo } from "@/components/ui/Logo";
+import { colors } from "@/constants/colors";
 import { motion } from "framer-motion";
 import { ChevronRight, Trophy } from "lucide-react";
 import Link from "next/link";
-
-const colors = {
-  blue: "#4285F4",
-  red: "#EA4335",
-  yellow: "#FBBC04",
-  green: "#34A853",
-};
+ 
 
 export const LeaderboardsPage = () => {
   return (
