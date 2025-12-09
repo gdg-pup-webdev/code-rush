@@ -10,6 +10,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { BouncyShape } from "../ui/BouncyShape";
 import { Home } from "lucide-react";
+import { Logo } from "../ui/Logo";
 
 const SparkRushGame = ({ reset }: { reset: () => void }) => {
   const { gameState, challenge, showTargetFlash, showSuccessOverlay } =
@@ -52,18 +53,7 @@ const SparkRushGame = ({ reset }: { reset: () => void }) => {
 
       {/* Header */}
       <header className="flex items-center justify-between p-4 border-b border-gray-200">
-        <Link href="/" className="text-2xl font-bold">
-          <span style={{ color: "var(--google-blue)" }}>S</span>
-          <span style={{ color: "var(--google-red)" }}>p</span>
-          <span style={{ color: "var(--google-yellow)" }}>a</span>
-          <span style={{ color: "var(--google-green)" }}>r</span>
-          <span style={{ color: "var(--google-blue)" }}>k</span>
-          <span style={{ color: "var(--foreground)" }}> </span>
-          <span style={{ color: "var(--google-red)" }}>R</span>
-          <span style={{ color: "var(--google-yellow)" }}>u</span>
-          <span style={{ color: "var(--google-green)" }}>s</span>
-          <span style={{ color: "var(--google-blue)" }}>h</span>
-        </Link>
+        <Logo/>
         <div className="flex items-center gap-6">
           <div
             className={`text-2xl font-semibold transition-colors flex items-center gap-2 ${

@@ -90,7 +90,7 @@ export function GameOverModal({ reset }: { reset: () => void }) {
 
         <button
           onClick={handlePlayAgain}
-          className="w-full mt-4 px-6 py-4 text-xl text-white font-bold rounded-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full mt-4 px-6 py-4 text-xl text-white font-bold rounded-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer "
           style={{ backgroundColor: "var(--google-blue)" }}
           disabled={isSaving}
         >
@@ -99,11 +99,14 @@ export function GameOverModal({ reset }: { reset: () => void }) {
         <Link
           href="/leaderboards"
           onClick={handleViewLeaderboards}
-          className={`mt-4 text-blue-500 hover:underline ${
-            isSaving ? "pointer-events-none opacity-50" : ""
-          }`}
+          
         >
+          <div className={`mt-4 text-blue-500 hover:underline ${
+            isSaving ? "pointer-events-none opacity-50" : ""
+          }`}>
+
           View Leaderboards
+          </div>
         </Link>
       </div>
     </div>

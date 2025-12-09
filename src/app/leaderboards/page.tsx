@@ -31,7 +31,7 @@ export const LeaderboardsPage = () => {
         <nav>
           <Link href="/spark-rush">
             <button
-              className="group px-6 py-2.5 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg hover:shadow-blue-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+              className="group px-6 py-2.5 text-white font-medium text-sm rounded-full shadow-md hover:shadow-lg hover:shadow-blue-200 transition-all transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer "
               style={{ backgroundColor: colors.blue }}
             >
               Enter Arena
