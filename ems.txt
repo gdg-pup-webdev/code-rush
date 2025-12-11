@@ -1,0 +1,39 @@
+// middleware.js or src/middleware.js
+
+import { NextResponse } from 'next/server';
+
+const allowedOrigins = ['https://www.your-allowed-domain.com'];
+
+export function middleware(request) {
+  const origin = request.headers.get('origin');
+  console.log('Request Origin:', origin); // Optional: log the origin for debugging
+
+  // Check if the origin is in the list of allowed origins
+  if (origin && !allowedOrigins.includes(origin)) {
+    // If not allowed, return a 403 Forbidden response
+    return new NextResponse(null, {
+      status: 403,
+      statusText: "Forbidden",
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+    });
+  }
+
+  // Set the necessary CORS headers for the allowed origin
+  const response = NextResponse.next();
+  if (origin && allowedOrigins.includes(origin)) {
+      response.headers.set('Access-Control-Allow-Origin', origin);
+  }
+  
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  response.headers.set('Access-Control-Max-Age', '86400'); // Cache CORS headers for 24 hours
+
+  return response;
+}
+
+// Specify the paths where this middleware should run
+export const config = {
+  matcher: '/api/:path*', // Apply middleware to all routes under /api
+};
