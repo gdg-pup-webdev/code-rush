@@ -45,7 +45,7 @@ export function generateHtml(blocks: CodeBlock[]): string {
         }
         return null;
       })
-      .filter((item) => item)
+      .filter((item : string) => item)
       .join("; ");
     return `style="${styles}"`;
   });
