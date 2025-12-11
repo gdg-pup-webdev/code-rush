@@ -1,0 +1,45 @@
+[
+  {
+    "title": "The Solid Blue Cube",
+    "description": "Create a basic 'div' element with a solid blue background (#3b82f6) and dimensions of 6rem by 6rem.",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\tbackground-color: #3b82f6;\n\t\twidth: 6rem;\n\t\theight: 6rem;\n\t} \n",
+      ">\n",
+      "</div>\n"
+    ]
+  },
+  {
+    "title": "The Padded Red Banner",
+    "description": "Construct a 'p' element containing the text \"Hello World\". The element must have a red background (#ef4444), 1rem of padding on all sides, and the text must be horizontally centered.",
+    "codeblocks": [
+      "<p \n",
+      "\tstyle={\n\t\tbackground-color: #ef4444;\n\t\tpadding: 1rem;\n\t\ttext-align: center;\n\t} \n",
+      ">Hello World</p>\n"
+    ]
+  },
+  {
+    "title": "Click & Confirm",
+    "description": "Arrange a 'button' element and a 'span' element next to each other on the same line. The button should say \"Click Me\" and the span should contain the text \"Done!\". Include a space between them.",
+    "codeblocks": ["<button>Click Me</button>", "<span>Done!</span>\n"]
+  },
+  {
+    "title": "The Sunny Frame",
+    "description": "Create an empty 'div' with a fixed size of 100px by 100px. The element must be outlined by a solid 2px yellow border (#facc15).",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\twidth: 100px;\n\t\theight: 100px;\n\t\tborder: 2px solid #facc15;\n\t} \n",
+      ">\n",
+      "</div>\n"
+    ]
+  },
+  {
+    "title": "The Wrapper Structure",
+    "description": "Structure two 'div' elements, with the inner one containing the text \"Inner Content\". The outer 'div' must have an attribute 'id' set to \"wrapper\".",
+    "codeblocks": [
+      "<div id=\"wrapper\">\n",
+      "\t<div>Inner Content</div>\n",
+      "</div>\n"
+    ]
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "title": "The Simple Blue Square",
+    "description": "Create a basic 'div' element with a solid blue background (#3b82f6) and dimensions of 6rem by 6rem.",
+    "codeblocks": [
+  "<html>\n\t<head>\n\t\t<title>SparkRush</title>\n\t\t<style>\n\t\t\tdiv {\n\t\t\t\tbackground-color: #3b82f6;\n\t\t\t\twidth: 6rem;\n\t\t\t\theight: 6rem;\n\t\t\t}\n\t\t</style>\n\t</head>\n",
+  "\t<body>\n",
+  "\t\t<div>\n",
+  "\t\t</div>\n",
+  "\t</body>\n",
+  "</html>\n"
+]
+
+  },
+  {
+    "title": "Thee Simple Blue Square",
+    "description": "Create a basic 'div' element with a solid blue background (#3b82f6) and dimensions of 6rem by 6rem.",
+    "codeblocks": ["<div>\n", "</div>\n"]
+  }
+]
