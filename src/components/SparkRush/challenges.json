@@ -21,7 +21,10 @@
   {
     "title": "Click & Confirm",
     "description": "Arrange a 'button' element and a 'span' element next to each other on the same line. The button should say \"Click Me\" and the span should contain the text \"Done!\". Include a space between them.",
-    "codeblocks": ["<button>Click Me</button>", "<span>Done!</span>\n"]
+    "codeblocks": [
+      "<button>Click Me</button>",
+      "<span>Done!</span>\n"
+    ]
   },
   {
     "title": "The Sunny Frame",
@@ -104,7 +107,11 @@
   {
     "title": "Mandatory Mailing",
     "description": "Create an 'input' field of type 'email'. The field must include the 'required' attribute (no value needed) to indicate that it must be filled out before form submission.",
-    "codeblocks": ["<input", "\ttype=\"email\"\n\trequired", "/>\n"]
+    "codeblocks": [
+      "<input",
+      "\ttype=\"email\"\n\trequired",
+      "/>\n"
+    ]
   },
   {
     "title": "The Direct Link",
@@ -112,9 +119,7 @@
     "codeblocks": [
       "<a",
       "\thref=\"https://example.com\"",
-      ">",
-      "\tVisit Example",
-      "</a>\n"
+      ">Visit Example</a>\n"
     ]
   },
   {
@@ -141,7 +146,7 @@
     "title": "The Accessible Picture",
     "description": "Create an <img> element. Set its source ('src') to 'image.jpg' and provide essential alternative text ('alt') as \"A placeholder image\". The element should be self-closing.",
     "codeblocks": [
-      "<img ",
+      "<img",
       "\tsrc=\"image.jpg\"\n\talt=\"A placeholder image\"",
       "/>\n"
     ]
@@ -176,7 +181,10 @@
   {
     "title": "The Divider",
     "description": "Create a simple, self-closing horizontal rule (<hr>) element to visually separate content.",
-    "codeblocks": ["<hr", "/>\n"]
+    "codeblocks": [
+      "<hr",
+      "/>\n"
+    ]
   },
   {
     "title": "The Outer Monologue",
@@ -210,21 +218,146 @@
   {
     "title": "Just a Box",
     "description": "Create an empty 'div' element with a 'class' attribute set to \"container\".",
-    "codeblocks": ["<div", "\tclass=\"container\"", "></div>\n"]
+    "codeblocks": [
+      "<div",
+      "\tclass=\"container\"",
+      "></div>\n"
+    ]
   },
   {
     "title": "The Blank Slate",
     "description": "Create a 'textarea' element for multiline user input. Set its number of columns ('cols') to 30 and rows ('rows') to 5.",
-    "codeblocks": ["<textarea", "\tcols=\"30\"\n\trows=\"5\"", "></textarea>\n"]
+    "codeblocks": [
+      "<textarea",
+      "\tcols=\"30\"\n\trows=\"5\"",
+      "></textarea>\n"
+    ]
   },
   {
     "title": "Link That Goes Nowhere",
     "description": "Create an anchor tag ('a') with the text \"Dead Link\". The link must have an 'href' attribute that points to '#' (fragment identifier) and a 'role' attribute set to \"button\".",
-    "codeblocks": ["<a", "\thref=\"#\"\n\trole=\"button\"", ">Dead Link</a>\n"]
+    "codeblocks": [
+      "<a",
+      "\thref=\"#\"\n\trole=\"button\"",
+      ">Dead Link</a>\n"
+    ]
   },
   {
     "title": "The Feature Announcement",
     "description": "Create an <h3> element containing the text \"New Feature!\".",
-    "codeblocks": ["<h3>", "\tNew Feature!", "</h3>\n"]
+    "codeblocks": [
+      "<h3>",
+      "\tNew Feature!",
+      "</h3>\n"
+    ]
+  },
+  {
+    "title": "The Absolute Center",
+    "description": "Create an outer 'div' and an inner 'div'. The outer container must use Flexbox to perfectly center the inner container both horizontally and vertically. The inner box should be 50px by 50px with a purple background (#a855f7).",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\tdisplay: flex;\n\t\tjustify-content: center;\n\t\talign-items: center;\n\t} \n",
+      ">",
+      "\t<div \n",
+      "\t\tstyle={\n\t\t\twidth: 50px;\n\t\t\theight: 50px;\n\t\t\tbackground-color: #a855f7;\n\t\t} \n",
+      "\t>\n",
+      "\t</div>\n</div>\n"
+    ]
+  },
+  {
+    "title": "The Wall-to-Wall Text",
+    "description": "Create a 'p' element containing the text \"I fill my parent!\". Set the element's width to 100% of its available space (like a w-full utility class).",
+    "codeblocks": [
+      "<p \n",
+      "\tstyle={\n\t\twidth: 100%;\n\t} \n",
+      ">I fill my parent!</p>\n"
+    ]
+  },
+  {
+    "title": "The Backwards Duo",
+    "description": "Create a container 'div' using Flexbox. Inside, place two paragraphs: \"First Item\" (give it id=\"A\") and \"Second Item\" (give it id=\"B\"). Use CSS order properties to make the Second Item appear first in the layout.",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\tdisplay: flex;\n\t} \n",
+      ">",
+      "\t<p id=\"A\" style=\"order: 2;\">First Item</p>\n",
+      "\t<p id=\"B\" style=\"order: 1;\">Second Item</p>\n",
+      "</div>\n"
+    ]
+  },
+  {
+    "title": "The Simple Split",
+    "description": "Create a container 'div' that uses CSS Grid. Configure the grid to have two equal-width columns. Inside, place two empty 'div' children with class names 'col-1' and 'col-2'.",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\tdisplay: grid;\n\t\tgrid-template-columns: 1fr 1fr;\n\t} \n",
+      ">",
+      "\t<div class=\"col-1\"></div>\n",
+      "\t<div class=\"col-2\"></div>\n",
+      "</div>\n"
+    ]
+  },
+  {
+    "title": "The Squished Spacing",
+    "description": "Create two separate 'p' elements. Give the first one the text \"Top Text\" and a 20px bottom margin. Give the second one the text \"Bottom Text\" and a 30px top margin. (The challenge is about correct structure, knowing margin collapse will happen is a bonus).",
+    "codeblocks": [
+      "<p \n",
+      "\tstyle={\n\t\tmargin-bottom: 20px;\n\t} \n",
+      ">Top Text</p>\n",
+      "<p \n",
+      "\tstyle={\n\t\tmargin-top: 30px;\n\t} \n",
+      ">Bottom Text</p>\n"
+    ]
+  },
+  {
+    "title": "The Hidden Element",
+    "description": "Create a 'div' element containing the text \"Only visible on small screens.\". Apply a style to ensure the element is hidden (i.e., display: none) unless a specific media query is applied (though only the initial display: none style is required here).",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\tdisplay: none;\n\t} \n",
+      ">Only visible on small screens.</div>\n"
+    ]
+  },
+  {
+    "title": "Full-Block Click",
+    "description": "Create an anchor tag ('a') with the text \"Click Area\". Use CSS to force the link to behave like a block-level element, taking up the full width available.",
+    "codeblocks": [
+      "<a \n",
+      "\tstyle={\n\t\tdisplay: block;\n\t} \n",
+      ">Click Area</a>\n"
+    ]
+  },
+  {
+    "title": "Spaced-Out Siblings",
+    "description": "Create a Flex container 'div'. Place two empty 'span' children inside. Use the CSS 'gap' property (set to 1rem) on the parent to ensure there is spacing between the children without needing margins.",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\tdisplay: flex;\n\t\tgap: 1rem;\n\t} \n",
+      ">",
+      "\t<span></span>\n",
+      "\t<span></span>\n",
+      "</div>\n"
+    ]
+  },
+  {
+    "title": "The Overlap Game",
+    "description": "Create two empty 'div's, one red (#ef4444) and one blue (#3b82f6). Both must have 50px dimensions and a position: absolute. Use z-index to make the red box stack above the blue box.",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\twidth: 50px;\n\t\theight: 50px;\n\t\tbackground-color: #ef4444;\n\t\tposition: absolute;\n\t\tz-index: 1;\n\t} \n",
+      "></div>\n",
+      "<div \n",
+      "\tstyle={\n\t\twidth: 50px;\n\t\theight: 50px;\n\t\tbackground-color: #3b82f6;\n\t\tposition: absolute;\n\t\tz-index: 0;\n\t\tleft: 25px;\n\t\ttop: 25px;\n\t} \n",
+      "></div>\n"
+    ]
+  },
+  {
+    "title": "Classified Heading",
+    "description": "Create an <h1> element with the text \"Main Title\". Assign it a class attribute of \"title-large\".",
+    "codeblocks": [
+      "<h1",
+      "\tclass=\"title-large\"",
+      ">Main Title</h1>\n"
+    ]
   }
 ]
