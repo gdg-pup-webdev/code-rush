@@ -1,5 +1,6 @@
 "use client";
 
+import { Howl } from "howler";
 import React, { useEffect, useState } from "react";
 import { CodeSpace } from "./components/CodeSpace";
 import { formatTime } from "./utils";
@@ -107,6 +108,21 @@ const SparkRushGame = ({ reset }: { reset: () => void }) => {
 const SparkRushContainer = () => {
   const [isReady, setIsReady] = useState(false);
   const [countdown, setCountdown] = useState(3);
+  const [countdownSfx] = useState(
+    new Howl({
+      src: ["/countdown_3.mp3"],
+      volume: 0.5,
+    })
+  );
+
+  useEffect(() => {
+    if (isReady) {
+      countdownSfx.play();
+    }
+    return () => {
+      countdownSfx.stop();
+    };
+  }, [isReady, countdownSfx]);
 
   const colors = {
     blue: "#4285F4",
