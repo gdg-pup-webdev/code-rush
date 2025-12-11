@@ -1,5 +1,5 @@
 "use client";
-
+import { Howl } from "howler";
 import React, {
   createContext,
   useContext,
@@ -41,8 +41,7 @@ interface SparkRushProviderProps {
 export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({
   children,
 }) => {
-
-  const timeRemaining = 10;
+  const timeRemaining = 50;
   const [gameState, setGameState] = useState<GameState>({
     timeRemaining: timeRemaining,
     score: 0,
@@ -51,6 +50,36 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({
   });
   const [challenge, setChallenge] = useState<Challenge>(loadRandomChallenge());
   const [codeBlocks, setCodeBlocks] = useState<CodeBlock[]>([]);
+  const [music] = useState(
+    new Howl({
+      src: ["/kahoot.mp3"],
+      loop: true,
+      volume: 0.5,
+    })
+  );
+  const [successSfx] = useState(
+    new Howl({
+      src: ["/ding.mp3"],
+      volume: 0.5,
+    })
+  );
+  const [gameOverSfx] = useState(
+    new Howl({
+      src: ["/success.mp3"],
+      volume: 0.5,
+    })
+  );
+  const [reactionSfx] = useState([
+    new Howl({ src: ["/reactions/amazing.mp3"], volume: 0.2 }),
+    new Howl({ src: ["/reactions/ang_galing.mp3"], volume: 0.9 }),
+    new Howl({ src: ["/reactions/babalue.mp3"], volume: 0.9 }),
+    new Howl({ src: ["/reactions/nice.mp3"], volume: 1.5 }),
+    new Howl({ src: ["/reactions/wow.mp3"], volume: 0.2 }),
+  ]);
+
+  // const sfx = new Howl({
+  //   src: ["/hit.wav"],
+  // });
 
   const resetGame = () => {
     setChallenge(loadRandomChallenge());
@@ -85,31 +114,48 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({
 
   // Timer
   useEffect(() => {
-    if (!gameState.gameActive) return;
-
-    const interval = setInterval(() => {
+    if (!gameState.gameActive) {
+      return;
+    }
+    const timer = setInterval(() => {
       setGameState((prev) => {
-        const newTime = prev.timeRemaining - 1;
-        if (newTime <= 0) {
-          return {
-            ...prev,
-            timeRemaining: 0,
-            gameActive: false,
-            gameOver: true,
-          };
+        if (prev.timeRemaining > 1) {
+          return { ...prev, timeRemaining: prev.timeRemaining - 1 };
         }
-        return { ...prev, timeRemaining: newTime };
+        return { ...prev, timeRemaining: 0, gameActive: false, gameOver: true };
       });
     }, 1000);
+    return () => clearInterval(timer);
+  }, [gameState.gameActive]);
 
-    return () => clearInterval(interval);
-  }, [gameState.gameActive, setGameState]);
+  // Music
+  useEffect(() => {
+    if (gameState.gameActive && !gameState.gameOver) {
+      music.play();
+    } else {
+      music.stop();
+    }
+    return () => {
+      music.stop();
+    };
+  }, [gameState.gameActive, gameState.gameOver, music]);
+
+  // Game over
+  useEffect(() => {
+    if (gameState.gameOver) {
+      gameOverSfx.play();
+    }
+  }, [gameState.gameOver, gameOverSfx]);
 
   // Check for win condition
   useEffect(() => {
     if (codeBlocks.length === 0) return;
 
     if (checkIsWin(codeBlocks, challenge.codeBlocks)) {
+      successSfx.play();
+      const randomReactionSfx =
+        reactionSfx[Math.floor(Math.random() * reactionSfx.length)];
+      randomReactionSfx.play();
       setGameState((prev) => ({ ...prev, score: prev.score + 1 }));
       setShowSuccessOverlay(true);
 
@@ -132,6 +178,8 @@ export const SparkRushProvider: React.FC<SparkRushProviderProps> = ({
     challenge.codeBlocks,
     setChallenge,
     setGameState,
+    successSfx,
+    reactionSfx,
   ]);
 
   const value = {
