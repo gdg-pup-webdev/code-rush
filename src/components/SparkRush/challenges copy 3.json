@@ -41,32 +41,5 @@
       "\t<div>Inner Content</div>\n",
       "</div>\n"
     ]
-  },
-  {
-    "title": "The Sunset Swipe",
-    "description": "Create an empty 'div' that is 200px wide and 50px tall. Give it a background that fades diagonally (from 45° angle) from a light green (#d9f99d) to a dark blue (#1e3a8a).",
-    "codeblocks": [
-      "<div \n",
-      "\tstyle={\n\t\twidth: 200px;\n\t\theight: 50px;\n\t\tbackground: linear-gradient(45deg, #d9f99d, #1e3a8a);\n\t} \n",
-      ">\n",
-      "</div>\n"
-    ]
-  },
-  {
-    "title": "The Input Companion",
-    "description": "Create an 'input' element of type 'checkbox'. Immediately preceding it, place a 'label' element with the text \"Accept Terms\". The label must be associated with the input using the 'for' and 'id' attributes (use \"terms\" for both).",
-    "codeblocks": [
-      "<label for=\"terms\">Accept Terms</label>",
-      "<input type=\"checkbox\" id=\"terms\" />\n"
-    ]
-  },
-  {
-    "title": "The Hidden Message",
-    "description": "Create a 'p' element containing the text \"TOP SECRET\". Apply a CSS style to make the text completely invisible without removing it from the document flow (Hint: use opacity).",
-    "codeblocks": [
-      "<p \n",
-      "\tstyle={\n\t\topacity: 0;\n\t} \n",
-      ">TOP SECRET</p>\n"
-    ]
   }
 ]

@@ -41,16 +41,16 @@ export const CodeBlockComponent = ({
 
 function SyntaxHighlightedContent({ content }: { content: string }) {
   // Split into lines first (before trimming)
-  const lines = content.split("\n");
+  // const lines = content.split("\n");
 
   // Find the first non-empty line to get base indentation
-  const firstNonEmptyLine = lines.find((l) => l.trim());
-  let baseIndent = firstNonEmptyLine
-    ? (firstNonEmptyLine.match(/^(\s*)/) || [])[1]?.length || 0
-    : 0;
+  // const firstNonEmptyLine = lines.find((l) => l.trim());
+  // let baseIndent = firstNonEmptyLine
+  //   ? (firstNonEmptyLine.match(/^(\s*)/) || [])[1]?.length || 0
+  //   : 0;
 
   // Now trim start and end whitespace from the entire content
-  const trimmedContent = content.trim();
+  const trimmedContent = content; // content.trim();
 
   // Tokenize and highlight the content
   const parts = trimmedContent.split(
@@ -58,25 +58,13 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
   );
 
   // Calculate padding (2px per space = 0.125rem)
-  const paddingRem = baseIndent * 1;
+  // const paddingRem = baseIndent * 1;
 
-  baseIndent = Math.floor(baseIndent / 2);
+  // baseIndent = Math.floor(baseIndent) * 0;
 
   return (
     <div className="relative w-full flex flex-row items-stretch">
-      {/* {Array.from({ length: baseIndent }).map((_, idx) => {
-        return (
-          <>
-            <div
-              key={idx}
-              className="absolute top-0 bottom-0 w-[1px] bg-gray-600"
-              style={{ left: `${idx * 36 }px`, }} // or rem
-            ></div>
-          </>
-        );
-      })} */}
-
-      <div style={{ width: `${baseIndent * 36 }px` }}></div>
+      {/* <div style={{ width: `${baseIndent * 36 }px` }}></div> */}
 
       <pre
         className="font-mono whitespace-pre-wrap leading-relaxed text-slate-100 text-xl"
@@ -86,7 +74,14 @@ function SyntaxHighlightedContent({ content }: { content: string }) {
           if (!part) return null;
 
           // HTML tags
-          if (part.match(/^<[^>]+>$/)) {
+          if (
+            // 1. Matches the opening part (e.g., "<div \n") OR
+            part.match(/^<[\s\S]*$/) ||
+            // 2. Matches the closing part (e.g., ">\n") OR
+            part.match(/^[^<]*>[\s\S]*$/) ||
+            // 3. Matches complete standalone tags (e.g., "</div>\n")
+            part.match(/^<[\s\S]*>$/)
+          ) {
             return (
               <span key={idx} className="text-blue-300">
                 {part}
