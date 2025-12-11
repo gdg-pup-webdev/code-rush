@@ -40,7 +40,7 @@ export const CodeBlockComponent = ({
 };
 
 function SyntaxHighlightedContent({ content }: { content: string }) {
-  const lines = content.split('\n');
+  const lines = content.split("\n");
 
   return (
     <div className="relative w-full flex flex-col">

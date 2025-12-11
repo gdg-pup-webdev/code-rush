@@ -56,17 +56,175 @@
     "title": "The Input Companion",
     "description": "Create an 'input' element of type 'checkbox'. Immediately preceding it, place a 'label' element with the text \"Accept Terms\". The label must be associated with the input using the 'for' and 'id' attributes (use \"terms\" for both).",
     "codeblocks": [
-      "<label for=\"terms\">Accept Terms</label>",
+      "<label for=\"terms\">",
+      "\tAccept Terms",
+      "</label>",
       "<input type=\"checkbox\" id=\"terms\" />\n"
     ]
   },
   {
-    "title": "The Hidden Message",
-    "description": "Create a 'p' element containing the text \"TOP SECRET\". Apply a CSS style to make the text completely invisible without removing it from the document flow (Hint: use opacity).",
+    "title": "The Ghost Button",
+    "description": "Create a 'button' element with the text \"Submit\". Style it to have a transparent background, a solid 1px black border, and 0.5rem of padding.",
+    "codeblocks": [
+      "<button \n",
+      "\tstyle={\n\t\tbackground-color: transparent;\n\t\tborder: 1px solid black;\n\t\tpadding: 0.5rem;\n\t} \n",
+      ">Submit</button>\n"
+    ]
+  },
+  {
+    "title": "The Philosopher's Whisper",
+    "description": "Use a 'blockquote' element to contain the text \"Keep moving forward.\". Give this block a 3rem margin on the left side and align the text inside to the right.",
+    "codeblocks": [
+      "<blockquote \n",
+      "\tstyle={\n\t\tmargin-left: 3rem;\n\t\ttext-align: right;\n\t} \n",
+      ">Keep moving forward.</blockquote>\n"
+    ]
+  },
+  {
+    "title": "Shopping List Shenanigans",
+    "description": "Create an unordered list (<ul>) containing three list items (<li>) with the text: \"Apples\", \"Bananas\", and \"Carrots\".",
+    "codeblocks": [
+      "<ul>\n",
+      "\t<li>Apples</li>\n",
+      "\t<li>Bananas</li>\n",
+      "\t<li>Carrots</li>\n",
+      "</ul>\n"
+    ]
+  },
+  {
+    "title": "The Emerald Glow",
+    "description": "Create an empty 'div' with 80px width and height. Apply a subtle green box shadow (#10b981) that is offset 0px and has a 5px blur radius.",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\twidth: 80px;\n\t\theight: 80px;\n\t\tbox-shadow: 0 0 5px #10b981;\n\t} \n",
+      ">\n",
+      "</div>\n"
+    ]
+  },
+  {
+    "title": "Mandatory Mailing",
+    "description": "Create an 'input' field of type 'email'. The field must include the 'required' attribute (no value needed) to indicate that it must be filled out before form submission.",
+    "codeblocks": ["<input", "\ttype=\"email\"\n\trequired", "/>\n"]
+  },
+  {
+    "title": "The Direct Link",
+    "description": "Create an 'a' (anchor) element. The link should navigate to 'https://example.com' and display the text \"Visit Example\".",
+    "codeblocks": [
+      "<a",
+      "\thref=\"https://example.com\"",
+      ">",
+      "\tVisit Example",
+      "</a>\n"
+    ]
+  },
+  {
+    "title": "Emphasis on the Emphasis",
+    "description": "Create a paragraph tag ('p') containing the text \"Important Info\". Make the word \"Important\" bold using the <strong> tag, and make the word \"Info\" italic using the <em> tag.",
+    "codeblocks": [
+      "<p>",
+      "\t<strong>Important</strong>",
+      "\t<em>Info</em>",
+      "</p>\n"
+    ]
+  },
+  {
+    "title": "Stuck to the Corner",
+    "description": "Create an empty 'div' that is 50px wide and tall. Set its position to 'fixed' so it stays put, and place it exactly 10px from the top and 10px from the right edge of the viewport.",
+    "codeblocks": [
+      "<div \n",
+      "\tstyle={\n\t\twidth: 50px;\n\t\theight: 50px;\n\t\tposition: fixed;\n\t\ttop: 10px;\n\t\tright: 10px;\n\t} \n",
+      ">\n",
+      "</div>\n"
+    ]
+  },
+  {
+    "title": "The Accessible Picture",
+    "description": "Create an <img> element. Set its source ('src') to 'image.jpg' and provide essential alternative text ('alt') as \"A placeholder image\". The element should be self-closing.",
+    "codeblocks": [
+      "<img ",
+      "\tsrc=\"image.jpg\"\n\talt=\"A placeholder image\"",
+      "/>\n"
+    ]
+  },
+  {
+    "title": "The Giant Heading",
+    "description": "Create an <h2> element with the text \"Big Title\". Apply a style to set the font size to 3em (three times the default font size).",
+    "codeblocks": [
+      "<h2 \n",
+      "\tstyle={\n\t\tfont-size: 3em;\n\t} \n",
+      ">Big Title</h2>\n"
+    ]
+  },
+  {
+    "title": "Unclickable Status",
+    "description": "Create an 'input' element of type 'text'. It must have a placeholder of \"Cannot Edit\" and be permanently disabled so the user cannot interact with it.",
+    "codeblocks": [
+      "<input",
+      "\ttype=\"text\"\n\tplaceholder=\"Cannot Edit\"\n\tdisabled",
+      "/>\n"
+    ]
+  },
+  {
+    "title": "The Citrus Line",
+    "description": "Create a 'span' element containing the text \"Attention!\". Style the text to have an orange underline (#f97316) that is solid and 2px thick.",
+    "codeblocks": [
+      "<span \n",
+      "\tstyle={\n\t\ttext-decoration: underline 2px solid #f97316;\n\t} \n",
+      ">Attention!</span>\n"
+    ]
+  },
+  {
+    "title": "The Divider",
+    "description": "Create a simple, self-closing horizontal rule (<hr>) element to visually separate content.",
+    "codeblocks": ["<hr", "/>\n"]
+  },
+  {
+    "title": "The Outer Monologue",
+    "description": "Create an outer 'div' element. Inside it, place a 'p' element containing the text \"Inside the box.\".",
+    "codeblocks": [
+      "<div>\n",
+      "\t<p>\n",
+      "\t\tInside the box.",
+      "\t</p>\n</div>\n"
+    ]
+  },
+  {
+    "title": "The Step-by-Step",
+    "description": "Create an ordered list (<ol>) containing two list items (<li>) with the text: \"First Step\" and \"Second Step\".",
+    "codeblocks": [
+      "<ol>\n",
+      "\t<li>First Step</li>\n",
+      "\t<li>Second Step</li>\n",
+      "</ol>\n"
+    ]
+  },
+  {
+    "title": "The Faint Print",
+    "description": "Create a 'p' element containing the text \"Fine Print\". Apply a style to set the text color to a light gray (#9ca3af).",
     "codeblocks": [
       "<p \n",
-      "\tstyle={\n\t\topacity: 0;\n\t} \n",
-      ">TOP SECRET</p>\n"
+      "\tstyle={\n\t\tcolor: #9ca3af;\n\t} \n",
+      ">Fine Print</p>\n"
     ]
+  },
+  {
+    "title": "Just a Box",
+    "description": "Create an empty 'div' element with a 'class' attribute set to \"container\".",
+    "codeblocks": ["<div", "\tclass=\"container\"", "></div>\n"]
+  },
+  {
+    "title": "The Blank Slate",
+    "description": "Create a 'textarea' element for multiline user input. Set its number of columns ('cols') to 30 and rows ('rows') to 5.",
+    "codeblocks": ["<textarea", "\tcols=\"30\"\n\trows=\"5\"", "></textarea>\n"]
+  },
+  {
+    "title": "Link That Goes Nowhere",
+    "description": "Create an anchor tag ('a') with the text \"Dead Link\". The link must have an 'href' attribute that points to '#' (fragment identifier) and a 'role' attribute set to \"button\".",
+    "codeblocks": ["<a", "\thref=\"#\"\n\trole=\"button\"", ">Dead Link</a>\n"]
+  },
+  {
+    "title": "The Feature Announcement",
+    "description": "Create an <h3> element containing the text \"New Feature!\".",
+    "codeblocks": ["<h3>", "\tNew Feature!", "</h3>\n"]
   }
 ]
