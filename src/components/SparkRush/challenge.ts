@@ -29,16 +29,26 @@ export function shuffleArray<T>(array: T[]): T[] {
 }
 
 export function generateHtml(blocks: CodeBlock[]): string {
-  const code = blocks
-    .map((block) =>
-      block.content
-        // .replace(/\n/g, "") // remove newlines
-        .replace(/\t/g, "") // remove tabs
-        // .replace(/ +/g, "") // remove spaces
-    )
-    .join(" ");
+  const code = blocks.map((block) => block.content).join("");
+  const styleRegex = /style={([^}]+)}/g;
 
-  return code;
+  return code.replace(styleRegex, (match, styleContent) => {
+    const styles = styleContent
+      .trim()
+      .split(";")
+      .filter((line: string) => line.trim())
+      .map((line: string) => {
+        const [key, value] = line.split(":").map((part) => part.trim());
+        if (key && value) {
+          const cssKey = key.replace(/([A-Z])/g, "-$1").toLowerCase();
+          return `${cssKey}: ${value}`;
+        }
+        return null;
+      })
+      .filter((item) => item)
+      .join("; ");
+    return `style="${styles}"`;
+  });
 }
 
 export const checkIsWin = (
