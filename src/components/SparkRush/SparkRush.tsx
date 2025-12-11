@@ -1,5 +1,6 @@
 "use client";
 
+import { Howl } from "howler";
 import React, { useEffect, useState } from "react";
 import { CodeSpace } from "./components/CodeSpace";
 import { formatTime } from "./utils";
@@ -14,8 +15,19 @@ import { Logo } from "../ui/Logo";
 import { colors } from "@/constants/colors";
 
 const SparkRushGame = ({ reset }: { reset: () => void }) => {
-  const { gameState, challenge, showTargetFlash, showSuccessOverlay } =
-    useSparkRush();
+  const {
+    gameState,
+    challenge,
+    showTargetFlash,
+    showSuccessOverlay,
+    setGameState,
+  } = useSparkRush();
+
+  const handleEndGame = () => {
+    if (setGameState) {
+      setGameState((prev) => ({ ...prev, gameOver: true, gameActive: false }));
+    }
+  };
 
   return (
     <div
@@ -69,6 +81,12 @@ const SparkRushGame = ({ reset }: { reset: () => void }) => {
           <div className="text-2xl font-semibold text-green-500 flex items-center gap-2">
             <span className="text-2xl">✓</span> {gameState.score}
           </div>
+          <button
+            onClick={handleEndGame}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+          >
+            End Game
+          </button>
         </div>
       </header>
 
@@ -107,6 +125,21 @@ const SparkRushGame = ({ reset }: { reset: () => void }) => {
 const SparkRushContainer = () => {
   const [isReady, setIsReady] = useState(false);
   const [countdown, setCountdown] = useState(3);
+  const [countdownSfx] = useState(
+    new Howl({
+      src: ["/countdown_3.mp3"],
+      volume: 0.5,
+    })
+  );
+
+  useEffect(() => {
+    if (isReady) {
+      countdownSfx.play();
+    }
+    return () => {
+      countdownSfx.stop();
+    };
+  }, [isReady, countdownSfx]);
 
   const colors = {
     blue: "#4285F4",
