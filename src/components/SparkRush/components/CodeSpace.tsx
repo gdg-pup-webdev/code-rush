@@ -55,7 +55,7 @@ export const CodeSpace = () => {
     >
       <SortableContext items={localBlocks.map((i) => i.id)}>
         <div
-          className={`flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 bg-slate-900  border-slate-700 hover:border-slate-600`}
+          className={`absolute inset-0 flex-1 p-4 rounded-lg border overflow-y-auto overflow-x-hidden max-h-[calc(100vh-250px)] transition-colors duration-500 bg-slate-900  border-slate-700 hover:border-slate-600`}
         >
           {localBlocks.map((b) => (
             <SortableCodeBlockComponent key={b.id} codeBlock={b} />

@@ -107,9 +107,11 @@ const SparkRushGame = ({ reset }: { reset: () => void }) => {
 
           {/* Code Space */}
           <div
-            className={`flex-1 flex flex-col transition-all duration-300 rounded-xl border-2 ${"bg-gray-50 border-gray-200"}`}
+            className={`relative h-full w-full flex-1 flex flex-col transition-all duration-300 rounded-xl border-2 ${"bg-gray-50 border-gray-200"}`}
           >
-            <CodeSpace />
+            <div className="w-full h-full">
+              <CodeSpace />
+            </div>
           </div>
         </div>
 
