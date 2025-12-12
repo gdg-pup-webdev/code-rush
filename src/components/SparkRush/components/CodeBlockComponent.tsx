@@ -17,6 +17,9 @@ export const CodeBlockComponent = ({
   isOverlay,
   ...rest
 }: Props) => {
+
+  if (!codeBlock) return <></>;
+
   return (
     // when when being dragged
     <div
