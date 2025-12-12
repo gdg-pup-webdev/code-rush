@@ -19,7 +19,7 @@ const SkeletonItem = () => (
 );
 
 export const Leaderboards = () => {
-  const pageSize = 15;
+  const pageSize = 45;
   const [leaderboards, setLeaderboards] = useState<LeaderBoardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(pageSize);
@@ -27,7 +27,7 @@ export const Leaderboards = () => {
   const handleOnGetLeaderboards = async () => {
     try {
       const leaderboardsPromise = getLeaderboards();
-      const timerPromise = new Promise((resolve) => setTimeout(resolve, 1000));
+      const timerPromise = new Promise((resolve) => setTimeout(resolve, 10));
       const [res] = await Promise.all([leaderboardsPromise, timerPromise]);
       setLeaderboards(res);
     } catch (error) {
