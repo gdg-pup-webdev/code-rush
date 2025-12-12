@@ -16,7 +16,9 @@ export function GameOverModal({ reset }: { reset: () => void }) {
       setIsSaving(true);
       try {
         const savePromise = postLeaderBoardEntry(username, score);
-        const timerPromise = new Promise((resolve) => setTimeout(resolve, 1000));
+        const timerPromise = new Promise((resolve) =>
+          setTimeout(resolve, 1000)
+        );
         await Promise.all([savePromise, timerPromise]);
       } catch (error) {
         console.error("Failed to save score:", error);
@@ -74,12 +76,12 @@ export function GameOverModal({ reset }: { reset: () => void }) {
 
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-gray-700 mb-4">
-            Enter your name to save your score!
+            Enter your email to save your score!
           </h3>
           <div className="flex flex-col sm:flex-row gap-4">
             <input
-              type="text"
-              placeholder="Enter your name"
+              type="email"
+              placeholder="Enter your email"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -96,16 +98,13 @@ export function GameOverModal({ reset }: { reset: () => void }) {
         >
           {isSaving ? "Saving..." : "Play Again"}
         </button>
-        <Link
-          href="/leaderboards"
-          onClick={handleViewLeaderboards}
-          
-        >
-          <div className={`mt-4 text-blue-500 hover:underline ${
-            isSaving ? "pointer-events-none opacity-50" : ""
-          }`}>
-
-          View Leaderboards
+        <Link href="/leaderboards" onClick={handleViewLeaderboards}>
+          <div
+            className={`mt-4 text-blue-500 hover:underline ${
+              isSaving ? "pointer-events-none opacity-50" : ""
+            }`}
+          >
+            View Leaderboards
           </div>
         </Link>
       </div>
