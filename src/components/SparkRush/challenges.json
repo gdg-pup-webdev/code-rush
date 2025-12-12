@@ -56,16 +56,6 @@
     ]
   },
   {
-    "title": "The Input Companion",
-    "description": "Create an 'input' element of type 'checkbox'. Immediately preceding it, place a 'label' element with the text \"Accept Terms\". The label must be associated with the input using the 'for' and 'id' attributes (use \"terms\" for both).",
-    "codeblocks": [
-      "<label for=\"terms\">",
-      "\tAccept Terms",
-      "</label>",
-      "<input type=\"checkbox\" id=\"terms\" />\n"
-    ]
-  },
-  {
     "title": "The Ghost Button",
     "description": "Create a 'button' element with the text \"Submit\". Style it to have a transparent background, a solid 1px black border, and 0.5rem of padding.",
     "codeblocks": [
@@ -253,31 +243,12 @@
     ]
   },
   {
-    "title": "The Absolute Center",
-    "description": "Create an outer 'div' and an inner 'div'. The outer container must use Flexbox to perfectly center the inner container both horizontally and vertically. The inner box should be 50px by 50px with a purple background (#a855f7).",
-    "codeblocks": [
-      "<div \n\tstyle={\n\t\tdisplay: flex;\n\t\tjustify-content: center;\n\t\talign-items: center;\n\t} \n>",
-      "\t<div \n\t\tstyle={\n\t\t\twidth: 50px;\n\t\t\theight: 50px;\n\t\t\tbackground-color: #a855f7;\n\t\t} \n\t>\n\t</div>\n",
-      "</div>\n"
-    ]
-  },
-  {
     "title": "The Wall-to-Wall Text",
     "description": "Create a 'p' element containing the text \"I fill my parent!\". Set the element's width to 100% of its available space (like a w-full utility class).",
     "codeblocks": [
       "<p \n",
       "\tstyle={\n\t\twidth: 100%;\n\t} \n",
       ">I fill my parent!</p>\n"
-    ]
-  },
-  {
-    "title": "The Simple Split",
-    "description": "Create a container 'div' that uses CSS Grid. Configure the grid to have two equal-width columns. Inside, place two empty 'div' children with class names 'col-1' and 'col-2'.",
-    "codeblocks": [
-      "<div \n\tstyle={\n\t\tdisplay: grid;\n\t\tgrid-template-columns: 1fr 1fr;\n\t} \n>",
-      "\t<div \n\t\tstyle={\n\t\t\tborder: 1px solid black;\n\t\t} \n\t>Hello GDG!</div>\n",
-      "\t<div \n\t\tstyle={\n\t\t\tborder: 1px solid black;\n\t\t} \n\t>I am Sparky</div>\n",
-      "</div>\n"
     ]
   },
   {
