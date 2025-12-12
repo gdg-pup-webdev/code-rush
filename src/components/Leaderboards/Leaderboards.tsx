@@ -56,7 +56,7 @@ export const Leaderboards = () => {
     visible: (i) => ({
       opacity: 1,
       transition: {
-        delay: i * 0.05,
+        delay: i * 0.00,
       },
     }),
   };
