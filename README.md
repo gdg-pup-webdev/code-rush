@@ -1,5 +1,10 @@
 # Code Rush
 
+[![Status: Archive](https://img.shields.io/badge/Status-Archive-lightgrey)](docs/state.md)
+[![Stack: Next.js](https://img.shields.io/badge/Stack-Next.js-black)](#about)
+[![FMD philosophy: 1.31.0](https://img.shields.io/badge/FMD%20philosophy-1.31.0-blue)](AGENTS.md)
+
+
 > **Code. Create. Conquer.**
 > The ultimate campus CSS showdown by GDG On Campus PUP.
 
@@ -8,6 +13,7 @@ Code Rush is an interactive, competitive coding platform designed to test and sh
 ## Table of Contents
 
 - [About](#about)
+- [Start here](#start-here)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Quick start](#quick-start)
@@ -20,6 +26,12 @@ Code Rush is an interactive, competitive coding platform designed to test and sh
 ## About
 
 Code Rush is GDG On Campus PUP's competitive CSS arena. Participants race against the clock to arrange code blocks, match designs, and build layouts. Built for campus showdowns where speed and visual accuracy both score.
+
+## Start here
+
+- **Humans:** this README, then [docs/state.md](docs/state.md)
+- **Agents:** [AGENTS.md](AGENTS.md) (state → index → FLAGS)
+- **Contributors:** table below
 
 ## Features
 
@@ -99,13 +111,13 @@ Once the server is running:
 
 ## Contributors
 
-This project is made possible by the GDG PUP community:
+This project is made possible by the GDG PUP community.
 
-| Role | Name |
-| --- | --- |
-| 💻 **Development** | [Erwin Daguinotas](https://www.linkedin.com/in/erwin-daguinotas) - Web Development Lead |
-| 💻 **Development** | [Gerald Berongoy](https://www.linkedin.com/in/geraldberongoy) - Senior Backend Developer / Web Development Learning Head |
-| 🚀 **CTO** | [Carlos Jerico Dela Torre](https://www.linkedin.com/in/delatorrecj/) - Chief Technology Officer (2025-2026) |
+| Name | Role | GitHub |
+| --- | --- | --- |
+| [Carlos Jerico Dela Torre](https://www.linkedin.com/in/delatorrecj) | Chief Technology Officer (2025-2026) | [@delatorrecj](https://github.com/delatorrecj) |
+| [Erwin Daguinotas](https://www.linkedin.com/in/erwin-daguinotas) | Web Development Lead | [@SauceCode01](https://github.com/SauceCode01) |
+| [Gerald Berongoy](https://www.linkedin.com/in/geraldberongoy) | Senior Backend Developer / Web Development Learning Head | [@geraldsberongoy](https://github.com/geraldsberongoy) |
 
 ## Support
 
