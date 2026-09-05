@@ -5,44 +5,58 @@
 
 Code Rush is an interactive, competitive coding platform designed to test and sharpen CSS skills. Participants race against the clock to arrange code blocks, match designs, and build layouts using modern CSS techniques. It combines the thrill of a speed run with the intricacies of web design.
 
-## 🚀 Features
+## Table of Contents
 
--   **Interactive Challenges**: Drag, drop, and configure CSS properties to solve layout puzzles.
--   **Real-time Preview**: Visualize your code's output instantly as you build.
--   **Speed Runs**: Compete for the fastest completion times and climb the leaderboards.
--   **Dynamic Visuals**: A polished, responsive interface featuring layout animations and bouncy geometric elements.
--   **Live Leaderboards**: Track rankings and scores in real-time.
+- [About](#about)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Quick start](#quick-start)
+- [Usage](#usage)
+- [Documentation](#documentation)
+- [Contributors](#contributors)
+- [Support](#support)
+- [License](#license)
 
-## 🛠️ Tech Stack
+## About
+
+Code Rush is GDG On Campus PUP's competitive CSS arena. Participants race against the clock to arrange code blocks, match designs, and build layouts. Built for campus showdowns where speed and visual accuracy both score.
+
+## Features
+
+- **Interactive Challenges**: Drag, drop, and configure CSS properties to solve layout puzzles.
+- **Real-time Preview**: Visualize your code's output instantly as you build.
+- **Speed Runs**: Compete for the fastest completion times and climb the leaderboards.
+- **Dynamic Visuals**: A polished, responsive interface featuring layout animations and bouncy geometric elements.
+- **Live Leaderboards**: Track rankings and scores in real-time.
+
+## Tech Stack
 
 Built with modern web technologies for performance and developer experience:
 
--   **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
--   **Language**: [TypeScript](https://www.typescriptlang.org/)
--   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
--   **Animations**: [Framer Motion](https://www.framer.com/motion/)
--   **Interactivity**: [dnd-kit](https://dndkit.com/) for drag-and-drop mechanics
--   **Backend**: [Firebase](https://firebase.google.com/)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Interactivity**: [dnd-kit](https://dndkit.com/) for drag-and-drop mechanics
+- **Backend**: [Firebase](https://firebase.google.com/)
 
-## 🏁 Getting Started
-
-Follow these instructions to set up the project locally for development and testing.
+## Quick start
 
 ### Prerequisites
 
 Ensure you have the following installed:
--   [Node.js](https://nodejs.org/) (v18 or higher recommended)
--   npm, yarn, pnpm, or bun
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- npm, yarn, pnpm, or bun
 
 ### Installation
 
-1.  **Clone the repository**
+1. **Clone the repository**
     ```bash
     git clone https://github.com/gdg-pup-webdev/code-rush.git
     cd code-rush
     ```
 
-2.  **Install dependencies**
+2. **Install dependencies**
     ```bash
     npm install
     # or
@@ -51,8 +65,8 @@ Ensure you have the following installed:
     pnpm install
     ```
 
-3.  **Environment Setup**
-    This project uses Firebase. You will need to create a `.env` file in the root directory with your Firebase configuration keys.
+3. **Environment Setup**
+    This project uses Firebase. Create a `.env` file in the root directory with your Firebase configuration keys. Point at [FLAGS.md](FLAGS.md) / [docs/state.md](docs/state.md) for secrets posture.
     ```env
     NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
@@ -60,40 +74,28 @@ Ensure you have the following installed:
     # Add other necessary variables
     ```
 
-4.  **Run the development server**
+4. **Run the development server**
     ```bash
     npm run dev
     ```
 
     Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 🧪 Usage
+## Usage
 
 Once the server is running:
--   Navigate to the **Landing Page** to start.
--   Click **"Enter Arena"** or **"Start Challenge"** to begin the *Spark Rush* game mode.
--   Use the **Leaderboard** button to view current standings.
-
-## 🆘 Support
-
-If you encounter any issues or have questions, please [open an issue](https://github.com/gdg-pup-webdev/code-rush/issues) on GitHub.
-
-## 👥 Maintainers
-
--   **GDG On Campus PUP** - *Core Team*
-
-## 📄 License
-
-Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
-
----
+- Navigate to the **Landing Page** to start.
+- Click **"Enter Arena"** or **"Start Challenge"** to begin the *Spark Rush* game mode.
+- Use the **Leaderboard** button to view current standings.
 
 ## Documentation
 
-- [docs/state.md](docs/state.md) - Operating position / handover
-- [docs/index.md](docs/index.md) - Doc inventory
-- [FLAGS.md](FLAGS.md) - Improvement register
-- [AGENTS.md](AGENTS.md) - Agent load order
+| Doc | Purpose |
+|-----|---------|
+| [State](docs/state.md) | Operating position / handover |
+| [Index](docs/index.md) | Doc inventory |
+| [FLAGS](FLAGS.md) | Improvement register |
+| [AGENTS](AGENTS.md) | Agent load order |
 
 ## Contributors
 
@@ -103,3 +105,14 @@ This project is made possible by the GDG PUP community:
 | --- | --- |
 | 💻 **Development** | [Erwin Daguinotas](https://www.linkedin.com/in/erwin-daguinotas) - Web Development Lead |
 | 💻 **Development** | [Gerald Berongoy](https://www.linkedin.com/in/geraldberongoy) - Senior Backend Developer / Web Development Learning Head |
+| 🚀 **CTO** | [Carlos Jerico Dela Torre](https://www.linkedin.com/in/delatorrecj/) - Chief Technology Officer (2025-2026) |
+
+## Support
+
+If you encounter any issues or have questions, please [open an issue](https://github.com/gdg-pup-webdev/code-rush/issues) on GitHub.
+
+Maintainers: **GDG On Campus PUP** Core Team.
+
+## License
+
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
